@@ -42,8 +42,11 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.canvasSizing = CanvasSizing.InSyncWithScreen;
         this.canvasPositioning = CanvasPositioning.TopLeft;
         this.pixelsPer3DUnit = 32;
-        this.ambientLightColor = 'ffffff';
+        this.ambientLightColor = 0xFFFFFF;
         this.ambientLightIntensity = 4;
+        this.fov = 75;
+        this.near = 0.5;
+        this.far = 1000;
     };
 
     const instanceProto = pluginProto.Instance.prototype;
@@ -61,12 +64,12 @@ cr.plugins_.SimpleThree = function (runtime) {
         UseObjectPosition: 1
     };
 
-    instanceProto.pixelsTo3DUnits = function(distance2D){
+    instanceProto.pixelsTo3DUnits = function (distance2D) {
         return distance2D / (this.pixelsPer3DUnit || 1);
     };
 
-    instanceProto.angleTo3D = function(angle){
-      return -cr.to_radians(angle + 90);
+    instanceProto.angleTo3D = function (angle) {
+        return -cr.to_radians(angle + 90);
     };
 
     instanceProto.onCreate = function () {
@@ -74,15 +77,13 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.canvasSizing = this.properties[1];
         this.canvasPositioning = this.properties[2];
         this.pixelsPer3DUnit = this.properties[4];
-        this.ambientLightColor = parseInt(`0x${this.properties[5]}`);
+        this.ambientLightColor = this.properties[5];
         this.ambientLightIntensity = this.properties[6];
+        this.fov = this.properties[7];
+        this.near = this.properties[8];
+        this.far = this.properties[9];
 
-        if (this.ambientLightColor === NaN){
-            console.warn('Invalid color expression, falling back to FFFFFF');
-            this.ambientLightColor = 0xFFFFFF;
-        }
-
-        console.log(this.properties);
+        console.log(this);
 
         this.canvas3d = createCanvas();
 
@@ -97,7 +98,7 @@ cr.plugins_.SimpleThree = function (runtime) {
 
         this.scene = new THREE.Scene();
 
-        this.camera = new THREE.PerspectiveCamera(75, this.width / this.height, 0.1, 1000);
+        this.camera = new THREE.PerspectiveCamera(this.fov, this.width / this.height, this.near, this.far);
         this.camera.position.z = 5;
 
         this.ambientLight = new THREE.AmbientLight(this.ambientLightColor, this.ambientLightIntensity);
@@ -107,6 +108,8 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.renderer = new THREE.WebGLRenderer({
             canvas: this.canvas3d,
         });
+
+        this.runtime.tickMe(this);
 
         this.updateCanvas3d();
 
@@ -185,9 +188,12 @@ cr.plugins_.SimpleThree = function (runtime) {
 
     instanceProto.tick = function () {
         var dt = this.runtime.getDt(this.inst);
-
-        // called every tick for you to update this.inst as necessary
-        // dt is the amount of time passed since the last tick, in case it's a movement
+        const canvas2D = this.runtime.canvas;
+        const rendererSize = this.renderer.getSize();
+        if (this.canvasSizing === CanvasSizing.InSyncWithScreen && (canvas2D.width != rendererSize.x || canvas2D.height != rendererSize.y)) {
+            console.log("Update Canvas 3D")
+            this.updateCanvas3d();
+        }
     };
 
     // The comments around these functions ensure they are removed when exporting, since the
@@ -229,7 +235,7 @@ cr.plugins_.SimpleThree = function (runtime) {
     //////////////////////////////////////
     // Conditions
     function Cnds() {
-    };
+    }
 
     // TODO: Put conditions here
 
@@ -238,9 +244,9 @@ cr.plugins_.SimpleThree = function (runtime) {
     //////////////////////////////////////
     // Actions
     function Acts() {
-    };
+    }
 
-    Acts.prototype.SetCameraPositionFrom2D = function(x, y, elevation){
+    Acts.prototype.SetCameraPositionFrom2D = function (x, y, elevation) {
         const x3D = this.pixelsTo3DUnits(x);
         const y3D = this.pixelsTo3DUnits(y);
         const elevation3D = this.pixelsTo3DUnits(elevation);
@@ -250,7 +256,7 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.camera.position.y = elevation3D;
     };
 
-    Acts.prototype.SetCameraAngleFrom2D = function(angle){
+    Acts.prototype.SetCameraAngleFrom2D = function (angle) {
         this.camera.rotation.y = this.angleTo3D(angle);
     };
 
@@ -259,7 +265,7 @@ cr.plugins_.SimpleThree = function (runtime) {
     //////////////////////////////////////
     // Expressions
     function Exps() {
-    };
+    }
 
     // TODO: Put expressions here
 

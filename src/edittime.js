@@ -38,13 +38,19 @@ ACESDone();
 // new cr.Property(ept_combo,		name,	"Item 1",		description, "Item 1|Item 2|Item 3")	// a dropdown list (initial_value is string of initially selected item)
 
 var property_list = [
+    new cr.Property(ept_section, "3D Canvas Options"),
     new cr.Property(ept_combo, "Canvas Order", "3D In Front", "Put the 3D canvas in front or behind the 2D canvas.", "3D In Front|3D Behind"),
     new cr.Property(ept_combo, "Canvas Sizing", "In sync with Screen", "Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout.", "In sync with Screen|Use Object Size"),
     new cr.Property(ept_combo, "Canvas Positioning", "Top-Left", "Keep the 3D canvas at the top-left or use the object's position.", "Top-Left|Use Object Position"),
     new cr.Property(ept_combo, "Hotspot", "Top-left", "Choose the location of the hot spot in the object.", "Top-left|Top|Top-right|Left|Center|Right|Bottom-left|Bottom|Bottom-right"),
     new cr.Property(ept_integer, "Pixels Per 3D Unit", 32, "Number of 2D pixels per 3D unit, used for 2D to 3D distances translation"),
-    new cr.Property(ept_text, "Ambient light Color", "ffffff", "Ambient light color in RGB format"),
-    new cr.Property(ept_integer, "Ambient light Intensity", 4, "How bright is the light"),
+    new cr.Property(ept_section, "Ambient Light Options"),
+    new cr.Property(ept_color, "Ambient light Color", cr.RGB(255, 255, 255), "Ambient light color in RGB format"),
+    new cr.Property(ept_float, "Ambient light Intensity", 1.5, "How bright is the light"),
+    new cr.Property(ept_section, "Camera Options"),
+    new cr.Property(ept_float, "Field Of View (FOV)", 75, "How wide is the field of view of the camera in degrees."),
+    new cr.Property(ept_float, "Near", 0.1, "The closest distance an object will be drawn in 3D units."),
+    new cr.Property(ept_float, "Far", 1000, "The furthest distance an object will be drawn in 3D units."),
 ];
 
 // Called by IDE when a new behavior type is to be created
