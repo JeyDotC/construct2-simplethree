@@ -38,7 +38,7 @@ ACESDone();
 // new cr.Property(ept_combo,		name,	"Item 1",		description, "Item 1|Item 2|Item 3")	// a dropdown list (initial_value is string of initially selected item)
 
 var property_list = [
-    new cr.Property(ept_section, "3D Canvas Options"),
+    new cr.Property(ept_section, "Three-dimensional Canvas Options"),
     new cr.Property(ept_combo, "Canvas Order", "3D In Front", "Put the 3D canvas in front or behind the 2D canvas.", "3D In Front|3D Behind"),
     new cr.Property(ept_combo, "Canvas Sizing", "In sync with Screen", "Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout.", "In sync with Screen|Use Object Size"),
     new cr.Property(ept_combo, "Canvas Positioning", "Top-Left", "Keep the 3D canvas at the top-left or use the object's position.", "Top-Left|Use Object Position"),
