@@ -3,7 +3,11 @@
         "name": "SimpleThree",			// as appears in 'add behavior' dialog, can be changed as long as "id" stays the same
         "id": "SimpleThree",			// this is used to SimpleThree this behavior and is saved to the project; never change it
         "version": "1.0",					// (float in x.y format) Behavior version - C2 shows compatibility warnings based on this
-        "description": "Applies a Name and/or a series of tags to an object and pick those object by Name or Tag.",
+        "description":  [
+            "Creates a secondary canvas to render Three JS objects. It provides basic settings for Camera and Ambient Light.",
+            "",
+            "> **NOTE:** This plugin is needed by the other `simplethree_*` plugins to work."
+        ].join('\n'),
         "author": "JeyDotC",
         "help url": "<your website or a manual entry on Scirra.com>",
         "category": "Three Js",				// Prefer to re-use existing categories, but you can set anything here
