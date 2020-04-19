@@ -6,7 +6,7 @@ Applies a Name and/or a series of tags to an object and pick those object by Nam
 
 | Name | Type | Description | Options |
 |------|------|-------------|---------|
-<td colspan="4">**Three-dimensional Canvas Options**</td>
+|<td colspan="4">**Three-dimensional Canvas Options**</td>
 |**Canvas Order**| _combo_ | Put the 3D canvas in front or behind the 2D canvas. Default value: `3D In Front` | - 3D In Front<br/>- 3D Behind |
 |**Canvas Sizing**| _combo_ | Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout. Default value: `In sync with Screen` | - In sync with Screen<br/>- Use Object Size |
 |**Canvas Positioning**| _combo_ | Keep the 3D canvas at the top-left or use the object's position. Default value: `Top-Left` | - Top-Left<br/>- Use Object Position |
