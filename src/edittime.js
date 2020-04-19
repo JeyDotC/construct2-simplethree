@@ -15,11 +15,13 @@
     };
 };
 
-// TODO: Add ACES
+if (typeof module !== 'undefined') {
+    module.exports = { settings: GetPluginSettings(), type: 'Plugin'};
+}
 
 // Actions
 
-AddNumberParam("Camera X", "The camera X in 2D Pixels.");
+AddNumberParam("Camera X", "The capmera X in 2D Pixels.");
 AddNumberParam("Camera Y", "The camera Y in 2D Pixels. (Will be translated to camera's Z axis.)");
 AddNumberParam("Camera Elevation", "The camera elevation in 2D Pixels. (Will be translated to camera's Y axis.)");
 AddAction(0, 0, "Set Camera position from 2D coordinates", "Camera", "Camera position to (<b>{0}</b>, <b>{1}</b>) and elevation of <b>{3}</b>", "Set the camera position using 2D coordinates.", "SetCameraPositionFrom2D");
