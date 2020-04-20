@@ -21,3 +21,14 @@ Creates a secondary canvas to render Three JS objects. It provides basic setting
 |**Field Of View (FOV)**| _float_ | How wide is the field of view of the camera in degrees. Default value: `75` |  |
 |**Near**| _float_ | The closest distance an object will be drawn in 3D units. Default value: `0.1` |  |
 |**Far**| _float_ | The furthest distance an object will be drawn in 3D units. Default value: `1000` |  |
+
+# ACES
+
+
+## Actions
+
+| Name | Description | Parameters |
+|------|-------------|------------|
+| |**Camera**| |
+|**Set Camera position from 2D coordinates**| Set the camera position using 2D coordinates. | - **Camera X** (number): The capmera X in 2D Pixels.<br />- **Camera Y** (number): The camera Y in 2D Pixels. (Will be translated to camera's Z axis.)<br />- **Camera Elevation** (number): The camera elevation in 2D Pixels. (Will be translated to camera's Y axis.) |
+|**Set Camera angle from 2D angle**| Set Camera angle using 2D angle in degrees. This gets translated into the camera's Y angle in radians. | - **Angle** (number): The camera angle in degrees. (Will be translated to camera's Y axis angle in Radians.) |
