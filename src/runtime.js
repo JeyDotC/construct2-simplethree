@@ -145,6 +145,8 @@ cr.plugins_.SimpleThree = function (runtime) {
 
         this.renderer.setSize(newSize.width, newSize.height);
         this.camera.aspect = newSize.width / newSize.height;
+
+        this.runtime.redraw = true;
     };
 
     instanceProto.onDestroy = function () {
@@ -259,6 +261,69 @@ cr.plugins_.SimpleThree = function (runtime) {
     Acts.prototype.SetCameraAngleFrom2D = function (angle) {
         this.camera.rotation.y = this.angleTo3D(angle);
     };
+
+    Acts.prototype.SetCanvasOrder = function(newCanvasOrder){
+        if (newCanvasOrder !== this.canvasOrder) {
+
+            this.canvasOrder = newCanvasOrder;
+
+            if (this.canvasOrder === CanvasOrder.InFront) {
+                this.runtime.canvas.before(this.canvas3d);
+            }else {
+                this.runtime.canvas.after(this.canvas3d);
+            }
+        }
+    };
+
+    Acts.prototype.SetCanvasSizing = function(newCanvasSizing){
+        if (newCanvasSizing !== this.canvasSizing) {
+            this.canvasSizing = newCanvasSizing;
+            this.updateCanvas3d();
+        }
+    };
+
+    Acts.prototype.SetCanvasPositioning = function(newCanvasPositioning){
+        if (newCanvasPositioning !== this.canvasPositioning) {
+            this.canvasPositioning = newCanvasPositioning;
+            this.updateCanvas3d();
+        }
+    };
+
+    Acts.prototype.SetPixelsPer3DUnit = function(newPixelsPer3DUnit){
+        this.pixelsPer3DUnit = newPixelsPer3DUnit;
+        this.runtime.redraw = true;
+    };
+
+    Acts.prototype.SetAmbientLightColor = function(newAmbientLightColor){
+        this.ambientLightColor = this.ambientLight.color = newAmbientLightColor;
+        this.runtime.redraw = true;
+    };
+
+    Acts.prototype.SetAmbientLightIntensity = function(newAmbientLightIntensity){
+        this.ambientLightIntensity = this.ambientLight.intensity = newAmbientLightIntensity;
+        this.runtime.redraw = true;
+    };
+
+    Acts.prototype.SetCameraFOV = function(cameraFov){
+        if (cameraFov == this.fov)
+        {
+            return;
+        }
+        this.fov = this.camera.fov = cameraFov;
+        this.camera.updateProjectionMatrix();
+        this.runtime.redraw = true;
+    };
+
+    Acts.prototype.SetCameraNear = function(cameraNear){
+        this.near = this.camera.near = cameraNear;
+        this.runtime.redraw = true;
+    };
+
+    Acts.prototype.SetCameraFar = function(cameraFar){
+        this.far = this.camera.far = cameraFar;
+        this.runtime.redraw = true;
+    };
+
 
     pluginProto.acts = new Acts();
 
