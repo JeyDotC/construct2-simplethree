@@ -191,7 +191,8 @@ cr.plugins_.SimpleThree = function (runtime) {
     instanceProto.tick = function () {
         var dt = this.runtime.getDt(this.inst);
         const canvas2D = this.runtime.canvas;
-        const rendererSize = this.renderer.getSize();
+        const rendererSize = new THREE.Vector3();
+        this.renderer.getSize(rendererSize);
         if (this.canvasSizing === CanvasSizing.InSyncWithScreen && (canvas2D.width != rendererSize.x || canvas2D.height != rendererSize.y)) {
             console.log("Update Canvas 3D")
             this.updateCanvas3d();
@@ -295,7 +296,8 @@ cr.plugins_.SimpleThree = function (runtime) {
     };
 
     Acts.prototype.SetAmbientLightColor = function(newAmbientLightColor){
-        this.ambientLightColor = this.ambientLight.color = newAmbientLightColor;
+        console.log(newAmbientLightColor);
+        this.ambientLightColor = this.ambientLight.color = new THREE.Color(newAmbientLightColor);
         this.runtime.redraw = true;
     };
 
@@ -315,12 +317,22 @@ cr.plugins_.SimpleThree = function (runtime) {
     };
 
     Acts.prototype.SetCameraNear = function(cameraNear){
+        if (cameraNear == this.near)
+        {
+            return;
+        }
         this.near = this.camera.near = cameraNear;
+        this.camera.updateProjectionMatrix();
         this.runtime.redraw = true;
     };
 
     Acts.prototype.SetCameraFar = function(cameraFar){
+        if (cameraFar == this.far)
+        {
+            return;
+        }
         this.far = this.camera.far = cameraFar;
+        this.camera.updateProjectionMatrix();
         this.runtime.redraw = true;
     };
 

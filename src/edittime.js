@@ -15,7 +15,7 @@
         "rotatable": false,
         "dependency": "three.js",
         "flags": 0						// uncomment lines to enable flags...
-            | pf_position_aces | pf_size_aces | pf_zorder_aces // | pf_effects
+            | pf_position_aces | pf_size_aces // | pf_effects
     };
 };
 
@@ -51,7 +51,7 @@ AddAction(4, 0, "Set Canvas Positioning",  "Canvas 3D", "The Canvas Positioning 
 AddNumberParam('Pixels Per 3D Unit', 'Number of 2D pixels per 3D unit', 32);
 AddAction(5, 0, "Set Pixels Per 3D Unit",  "Canvas 3D", "The Pixels Per 3D Unit are <b>{0}</b> now", "Set the Number of 2D pixels per 3D unit, used for 2D to 3D distances translation.", "SetPixelsPer3DUnit");
 
-AddStringParam('Ambient light Color', 'Ambient light color in CSS-style string', '#ffffff');
+AddStringParam('Ambient light Color', 'Ambient light color in CSS-style string', "#ffffff");
 AddAction(6, 0, "Set The Ambient light Color",  "Ambient Light", "The Ambient light Color is <b>{0}</b> now", "Set the Ambient light Color.", "SetAmbientLightColor");
 
 AddNumberParam('Ambient light Intensity', 'How bright is the ambient light', 1.5);
