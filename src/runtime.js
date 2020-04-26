@@ -77,7 +77,7 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.canvasSizing = this.properties[1];
         this.canvasPositioning = this.properties[2];
         this.pixelsPer3DUnit = this.properties[4];
-        this.ambientLightColor = this.properties[5];
+        this.ambientLightColor = new THREE.Color(this.properties[5]);
         this.ambientLightIntensity = this.properties[6];
         this.fov = this.properties[7];
         this.near = this.properties[8];
@@ -194,7 +194,6 @@ cr.plugins_.SimpleThree = function (runtime) {
         const rendererSize = new THREE.Vector3();
         this.renderer.getSize(rendererSize);
         if (this.canvasSizing === CanvasSizing.InSyncWithScreen && (canvas2D.width != rendererSize.x || canvas2D.height != rendererSize.y)) {
-            console.log("Update Canvas 3D")
             this.updateCanvas3d();
         }
     };
@@ -263,52 +262,50 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.camera.rotation.y = this.angleTo3D(angle);
     };
 
-    Acts.prototype.SetCanvasOrder = function(newCanvasOrder){
+    Acts.prototype.SetCanvasOrder = function (newCanvasOrder) {
         if (newCanvasOrder !== this.canvasOrder) {
 
             this.canvasOrder = newCanvasOrder;
 
             if (this.canvasOrder === CanvasOrder.InFront) {
                 this.runtime.canvas.before(this.canvas3d);
-            }else {
+            } else {
                 this.runtime.canvas.after(this.canvas3d);
             }
         }
     };
 
-    Acts.prototype.SetCanvasSizing = function(newCanvasSizing){
+    Acts.prototype.SetCanvasSizing = function (newCanvasSizing) {
         if (newCanvasSizing !== this.canvasSizing) {
             this.canvasSizing = newCanvasSizing;
             this.updateCanvas3d();
         }
     };
 
-    Acts.prototype.SetCanvasPositioning = function(newCanvasPositioning){
+    Acts.prototype.SetCanvasPositioning = function (newCanvasPositioning) {
         if (newCanvasPositioning !== this.canvasPositioning) {
             this.canvasPositioning = newCanvasPositioning;
             this.updateCanvas3d();
         }
     };
 
-    Acts.prototype.SetPixelsPer3DUnit = function(newPixelsPer3DUnit){
+    Acts.prototype.SetPixelsPer3DUnit = function (newPixelsPer3DUnit) {
         this.pixelsPer3DUnit = newPixelsPer3DUnit;
         this.runtime.redraw = true;
     };
 
-    Acts.prototype.SetAmbientLightColor = function(newAmbientLightColor){
-        console.log(newAmbientLightColor);
+    Acts.prototype.SetAmbientLightColor = function (newAmbientLightColor) {
         this.ambientLightColor = this.ambientLight.color = new THREE.Color(newAmbientLightColor);
         this.runtime.redraw = true;
     };
 
-    Acts.prototype.SetAmbientLightIntensity = function(newAmbientLightIntensity){
+    Acts.prototype.SetAmbientLightIntensity = function (newAmbientLightIntensity) {
         this.ambientLightIntensity = this.ambientLight.intensity = newAmbientLightIntensity;
         this.runtime.redraw = true;
     };
 
-    Acts.prototype.SetCameraFOV = function(cameraFov){
-        if (cameraFov == this.fov)
-        {
+    Acts.prototype.SetCameraFOV = function (cameraFov) {
+        if (cameraFov == this.fov) {
             return;
         }
         this.fov = this.camera.fov = cameraFov;
@@ -316,9 +313,8 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.runtime.redraw = true;
     };
 
-    Acts.prototype.SetCameraNear = function(cameraNear){
-        if (cameraNear == this.near)
-        {
+    Acts.prototype.SetCameraNear = function (cameraNear) {
+        if (cameraNear == this.near) {
             return;
         }
         this.near = this.camera.near = cameraNear;
@@ -326,9 +322,8 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.runtime.redraw = true;
     };
 
-    Acts.prototype.SetCameraFar = function(cameraFar){
-        if (cameraFar == this.far)
-        {
+    Acts.prototype.SetCameraFar = function (cameraFar) {
+        if (cameraFar == this.far) {
             return;
         }
         this.far = this.camera.far = cameraFar;
@@ -343,6 +338,51 @@ cr.plugins_.SimpleThree = function (runtime) {
     // Expressions
     function Exps() {
     }
+
+    Exps.prototype.CanvasOrder = function (ret) {
+        ret.set_int(this.canvasOrder);
+    };
+
+    Exps.prototype.CanvasSizing = function (ret) {
+        ret.set_int(this.canvasSizing);
+    };
+
+    Exps.prototype.CanvasPositioning = function (ret) {
+        ret.set_int(this.canvasPositioning);
+    };
+
+    Exps.prototype.HotspotX = function (ret) {
+        ret.set_float(this.hotspotX);
+    };
+
+    Exps.prototype.HotspotY = function (ret) {
+        ret.set_float(this.hotspotY);
+    };
+
+    Exps.prototype.PixelsPer3DUnit = function (ret) {
+        ret.set_int(this.pixelsPer3DUnit);
+    };
+
+    Exps.prototype.AmbientLightColor = function (ret) {
+        ret.set_string(this.ambientLightColor.getStyle());
+    };
+
+    Exps.prototype.AmbientLightIntensity = function (ret) {
+        ret.set_float(this.ambientLightIntensity);
+    };
+
+    Exps.prototype.Fov = function (ret) {
+        ret.set_float(this.fov);
+    };
+
+    Exps.prototype.Near = function (ret) {
+        ret.set_float(this.near);
+    };
+
+    Exps.prototype.Far = function (ret) {
+        ret.set_float(this.far);
+    };
+
 
     // TODO: Put expressions here
 

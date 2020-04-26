@@ -3,7 +3,7 @@
         "name": "SimpleThree",			// as appears in 'add behavior' dialog, can be changed as long as "id" stays the same
         "id": "SimpleThree",			// this is used to SimpleThree this behavior and is saved to the project; never change it
         "version": "1.0",					// (float in x.y format) Behavior version - C2 shows compatibility warnings based on this
-        "description":  [
+        "description": [
             "Creates a secondary canvas to render Three JS objects. It provides basic settings for Camera and Ambient Light.",
             "",
             "> **NOTE:** This plugin is needed by the other `simplethree_*` plugins to work."
@@ -20,7 +20,7 @@
 };
 
 if (typeof module !== 'undefined') {
-    module.exports = { settings: GetPluginSettings(), type: 'Plugin'};
+    module.exports = {settings: GetPluginSettings(), type: 'Plugin'};
 }
 
 // Actions
@@ -36,26 +36,26 @@ AddAction(1, 0, "Set Camera angle from 2D angle", "Camera", "Camera angle to (<b
 AddComboParamOption('3D In Front');
 AddComboParamOption('3D Behind');
 AddComboParam('Canvas Order', 'If the 3D canvas will be in front or behind the 2D canvas.', 0);
-AddAction(2, 0, "Set Canvas Order",  "Canvas 3D", "The Canvas Order is <b>{0}</b> now", "Put the 3D canvas in front or behind the 2D canvas.", "SetCanvasOrder");
+AddAction(2, 0, "Set Canvas Order", "Canvas 3D", "The Canvas Order is <b>{0}</b> now", "Put the 3D canvas in front or behind the 2D canvas.", "SetCanvasOrder");
 
 AddComboParamOption('In sync with Screen');
 AddComboParamOption('Use Object Size');
 AddComboParam('Canvas Sizing', 'The canvas size behavior.', 0);
-AddAction(3, 0, "Set Canvas Sizing",  "Canvas 3D", "The Canvas Sizing is <b>{0}</b> now", "Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout.", "SetCanvasSizing");
+AddAction(3, 0, "Set Canvas Sizing", "Canvas 3D", "The Canvas Sizing is <b>{0}</b> now", "Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout.", "SetCanvasSizing");
 
 AddComboParamOption('Top-Left');
 AddComboParamOption('Use Object Position');
 AddComboParam('Canvas Positioning', 'The canvas position behavior.', 0);
-AddAction(4, 0, "Set Canvas Positioning",  "Canvas 3D", "The Canvas Positioning is <b>{0}</b> now", "Keep the 3D canvas at the top-left or use the object's position.", "SetCanvasPositioning");
+AddAction(4, 0, "Set Canvas Positioning", "Canvas 3D", "The Canvas Positioning is <b>{0}</b> now", "Keep the 3D canvas at the top-left or use the object's position.", "SetCanvasPositioning");
 
 AddNumberParam('Pixels Per 3D Unit', 'Number of 2D pixels per 3D unit', 32);
-AddAction(5, 0, "Set Pixels Per 3D Unit",  "Canvas 3D", "The Pixels Per 3D Unit are <b>{0}</b> now", "Set the Number of 2D pixels per 3D unit, used for 2D to 3D distances translation.", "SetPixelsPer3DUnit");
+AddAction(5, 0, "Set Pixels Per 3D Unit", "Canvas 3D", "The Pixels Per 3D Unit are <b>{0}</b> now", "Set the Number of 2D pixels per 3D unit, used for 2D to 3D distances translation.", "SetPixelsPer3DUnit");
 
 AddStringParam('Ambient light Color', 'Ambient light color in CSS-style string', "#ffffff");
-AddAction(6, 0, "Set The Ambient light Color",  "Ambient Light", "The Ambient light Color is <b>{0}</b> now", "Set the Ambient light Color.", "SetAmbientLightColor");
+AddAction(6, 0, "Set The Ambient light Color", "Ambient Light", "The Ambient light Color is <b>{0}</b> now", "Set the Ambient light Color.", "SetAmbientLightColor");
 
 AddNumberParam('Ambient light Intensity', 'How bright is the ambient light', 1.5);
-AddAction(7, 0, "Set The Ambient Light Intensity",  "Ambient Light", "Ambient Light Intensity is <b>{0}</b> now", "Set How bright is the ambient light.", "SetAmbientLightIntensity");
+AddAction(7, 0, "Set The Ambient Light Intensity", "Ambient Light", "Ambient Light Intensity is <b>{0}</b> now", "Set How bright is the ambient light.", "SetAmbientLightIntensity");
 
 AddNumberParam("Field Of View", "The Field Of View (FOV) in degrees. (Will be translated to camera's Y axis angle in Radians.)", 75);
 AddAction(8, 0, "Set Field Of View (FOV)", "Camera", "Camera FOV is (<b>{0}</b>) degrees now", "How wide is the field of view of the camera in degrees.", "SetCameraFOV");
@@ -65,6 +65,19 @@ AddAction(9, 0, "Set Camera Near Distance", "Camera", "Camera near distance is (
 
 AddNumberParam("Far", "The furthest distance an object will be drawn in 3D units.", 1000);
 AddAction(10, 0, "Set Camera Far Distance", "Camera", "Camera far distance is (<b>{0}</b>) 3D Units now", "Set The furthest distance an object will be drawn in 3D units.", "SetCameraFar");
+
+// Expressions
+AddExpression(0, ef_return_number, "Canvas Order", "Canvas 3D", "CanvasOrder", "The 3D canvas in front or behind the 2D canvas. 0=3D In Front, 1=3D Behind");
+AddExpression(1, ef_return_number, "Canvas Sizing", "Canvas 3D", "CanvasSizing", "Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout. 0=In sync with Screen, 1=Use Object Size");
+AddExpression(2, ef_return_number, "Canvas Positioning", "Canvas 3D", "CanvasPositioning", "Keep the 3D canvas at the top-left or use the object's position. 0=Top-Left, 1=Use Object Position");
+AddExpression(3, ef_return_number, "Hotspot X", "Canvas 3D", "HotspotX", "The location of the hot spot in the object.");
+AddExpression(4, ef_return_number, "Hotspot Y", "Canvas 3D", "HotspotY", "The location of the hot spot in the object.");
+AddExpression(5, ef_return_number, "Pixels Per 3D Unit", "Canvas 3D", "PixelsPer3DUnit", "Number of 2D pixels per 3D unit, used for 2D to 3D distances translation");
+AddExpression(6, ef_return_string, "Ambient light Color", "Ambient Light", "AmbientLightColor", "Ambient light color in RGB format");
+AddExpression(7, ef_return_number, "Ambient light Intensity", "Ambient Light", "AmbientLightIntensity", "How bright is the light");
+AddExpression(8, ef_return_number, "Field Of View (FOV)", "Camera", "Fov", "How wide is the field of view of the camera in degrees.");
+AddExpression(9, ef_return_number, "Near", "Camera", "Near", "The closest distance an object will be drawn in 3D units.");
+AddExpression(10, ef_return_number, "Far", "Camera", "Far", "The furthest distance an object will be drawn in 3D units.");
 
 ////////////////////////////////////////
 ACESDone();
@@ -125,8 +138,7 @@ function IDEInstance(instance, type) {
     // this.myValue = 0;
 }
 
-IDEInstance.prototype.OnCreate = function()
-{
+IDEInstance.prototype.OnCreate = function () {
     this.instance.SetHotspot(GetHotspot(this.properties["Hotspot"]));
 };
 
