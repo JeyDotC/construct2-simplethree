@@ -1,4 +1,5 @@
 # SimpleThree
+**Type:** Plugin
 
 Creates a secondary canvas to render Three JS objects. It provides basic settings for Camera and Ambient Light.
 
@@ -24,7 +25,6 @@ Creates a secondary canvas to render Three JS objects. It provides basic setting
 
 # ACES
 
-
 ## Actions
 
 | Name | Description | Parameters |
@@ -43,3 +43,22 @@ Creates a secondary canvas to render Three JS objects. It provides basic setting
 | |**Ambient Light**| |
 |**Set The Ambient light Color**| Set the Ambient light Color. | - **Ambient light Color** _string_ = `#ffffff`: Ambient light color in CSS-style string  |
 |**Set The Ambient Light Intensity**| Set How bright is the ambient light. | - **Ambient light Intensity** _number_ = `1.5`: How bright is the ambient light  |
+
+## Expressions
+
+| Name | Type | Description | Options |
+|------|------|-------------|---------|
+| | |**Canvas 3D**| |
+|**Canvas Order**<br/>**Usage:** `SimpleThree.CanvasOrder`|`number`| The 3D canvas in front or behind the 2D canvas. 0=3D In Front, 1=3D Behind |  |
+|**Canvas Sizing**<br/>**Usage:** `SimpleThree.CanvasSizing`|`number`| Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout. 0=In sync with Screen, 1=Use Object Size |  |
+|**Canvas Positioning**<br/>**Usage:** `SimpleThree.CanvasPositioning`|`number`| Keep the 3D canvas at the top-left or use the object's position. 0=Top-Left, 1=Use Object Position |  |
+|**Hotspot X**<br/>**Usage:** `SimpleThree.HotspotX`|`number`| The location of the hot spot in the object. |  |
+|**Hotspot Y**<br/>**Usage:** `SimpleThree.HotspotY`|`number`| The location of the hot spot in the object. |  |
+|**Pixels Per 3D Unit**<br/>**Usage:** `SimpleThree.PixelsPer3DUnit`|`number`| Number of 2D pixels per 3D unit, used for 2D to 3D distances translation |  |
+| | |**Ambient Light**| |
+|**Ambient light Color**<br/>**Usage:** `SimpleThree.AmbientLightColor`|`string`| Ambient light color in RGB format |  |
+|**Ambient light Intensity**<br/>**Usage:** `SimpleThree.AmbientLightIntensity`|`number`| How bright is the light |  |
+| | |**Camera**| |
+|**Field Of View (FOV)**<br/>**Usage:** `SimpleThree.Fov`|`number`| How wide is the field of view of the camera in degrees. |  |
+|**Near**<br/>**Usage:** `SimpleThree.Near`|`number`| The closest distance an object will be drawn in 3D units. |  |
+|**Far**<br/>**Usage:** `SimpleThree.Far`|`number`| The furthest distance an object will be drawn in 3D units. |  |
