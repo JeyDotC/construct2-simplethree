@@ -413,12 +413,12 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.runtime.redraw = true;
     };
     Acts.prototype.SetFogNear = function (fogNear) {
-        this.fogNear = this.pixelsPer3DUnit(fogNear);
+        this.fogNear = this.pixelsTo3DUnits(fogNear);
         this.configureFog();
         this.runtime.redraw = true;
     };
     Acts.prototype.SetFogFar = function (fogFar) {
-        this.fogFar = this.pixelsPer3DUnit(fogFar);
+        this.fogFar = this.pixelsTo3DUnits(fogFar);
         this.configureFog();
         this.runtime.redraw = true;
     };
@@ -459,7 +459,7 @@ cr.plugins_.SimpleThree = function (runtime) {
     };
 
     Exps.prototype.AmbientLightColor = function (ret) {
-        ret.set_string(this.ambientLightColor.getStyle());
+        ret.set_int(this.ambientLightColor.getHex());
     };
 
     Exps.prototype.AmbientLightIntensity = function (ret) {
@@ -478,8 +478,24 @@ cr.plugins_.SimpleThree = function (runtime) {
         ret.set_float(this.threeDimentionalUnitsToPixels(this.far));
     };
 
-
-    // TODO: Put expressions here
+    Exps.prototype.FogType = function (ret) {
+        ret.set_int(this.fogType);
+    };
+    Exps.prototype.FogColor = function (ret) {
+        ret.set_int(this.fogColor.getHex());
+    };
+    Exps.prototype.FogDensity = function (ret) {
+        ret.set_float(this.fogDensity);
+    };
+    Exps.prototype.FogNear = function (ret) {
+        ret.set_float(this.threeDimentionalUnitsToPixels(this.fogNear));
+    };
+    Exps.prototype.FogFar = function (ret) {
+        ret.set_float(this.threeDimentionalUnitsToPixels(this.fogFar));
+    };
+    Exps.prototype.SceneBackgroundColor = function (ret) {
+        ret.set_int(this.seceneBackgroundColor.getHex());
+    };
 
     pluginProto.exps = new Exps();
 

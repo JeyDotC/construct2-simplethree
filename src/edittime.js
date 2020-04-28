@@ -66,7 +66,7 @@ AddAction(4, 0, "Set Canvas Positioning", "Canvas 3D", "The Canvas Positioning i
 AddNumberParam('Pixels Per 3D Unit', 'Number of 2D pixels per 3D unit', 32);
 AddAction(5, 0, "Set Pixels Per 3D Unit", "Canvas 3D", "The Pixels Per 3D Unit are <b>{0}</b> now", "Set the Number of 2D pixels per 3D unit, used for 2D to 3D distances translation.", "SetPixelsPer3DUnit");
 
-AddStringParam('Ambient light Color', 'Ambient light color in CSS-style string', "#ffffff");
+AddStringParam('Ambient light Color', 'Ambient light color in CSS-style string', '"#ffffff"');
 AddAction(6, 0, "Set The Ambient light Color", "Ambient Light", "The Ambient light Color is <b>{0}</b> now", "Set the Ambient light Color.", "SetAmbientLightColor");
 
 AddNumberParam('Ambient light Intensity', 'How bright is the ambient light', 1.5);
@@ -87,7 +87,7 @@ AddComboParamOption('Exponential Squared');
 AddComboParam('Fog Type', 'The Type of Fog, use None to have no fog at all.', 0);
 AddAction(11, 0, "Set Fog Type", "Fog", "Fog Type is <b>{0}</b> now", "Set The Fog Type.", "SetFogType");
 
-AddStringParam('Fog Color', 'Fog color in CSS-style string', "#ffffff");
+AddStringParam('Fog Color', 'Fog color in CSS-style string', '"#ffffff"');
 AddAction(12, 0, "Set Fog Color", "Fog", "Fog Color is <b>{0}</b> now", "Set The Fog Color.", "SetFogColor");
 
 AddNumberParam("Fog Density", "How fast the fog will grow dense.", 0.06);
@@ -99,8 +99,18 @@ AddAction(14, 0, "Set Fog Near", "Fog", "Fog Near is <b>{0}</b> now", "Set The F
 AddNumberParam("Fog Far Distance", "Distance in 2D units.", 300);
 AddAction(15, 0, "Set Fog Far", "Fog", "Fog Near is <b>{0}</b> now", "Set The Fog Far Distance. Only applies for Linear Fog.", "SetFogFar");
 
-AddStringParam('Scene Background Color', 'Color in CSS-style string', "#ffffff");
-AddAction(16, 0, "Set Scene Background Color", "Fog", "Scene Background Color is <b>{0}</b> now", "Set The Scene Background Color.", "SetSceneBackgroundColor");
+AddStringParam('Scene Background Color', 'Color in CSS-style string', '"#ffffff"');
+AddAction(16, 0, "Set Scene Background Color", "Scene", "Scene Background Color is <b>{0}</b> now", "Set The Scene Background Color.", "SetSceneBackgroundColor");
+
+// Colors through numbers
+AddStringParam('Ambient light Color', 'Ambient light color From Number', "rgb(255, 255, 255)");
+AddAction(17, 0, "Set The Ambient light Color From Number", "Ambient Light", "The Ambient light Color is <b>{0}</b> now", "Set the Ambient light Color.", "SetAmbientLightColor");
+
+AddNumberParam('Fog Color', 'Fog color From Number', "rgb(255, 255, 255)");
+AddAction(18, 0, "Set Fog Color From Number", "Fog", "Fog Color is <b>{0}</b> now", "Set The Fog Color.", "SetFogColor");
+
+AddNumberParam('Scene Background Color', 'Color using a number', 0xFFFFFF);
+AddAction(19, 0, "Set Scene Background Color From Number", "Scene", "Scene Background Color is <b>{0}</b> now", "Set The Scene Background Color.", "SetSceneBackgroundColor");
 
 // Expressions
 AddExpression(0, ef_return_number, "Canvas Order", "Canvas 3D", "CanvasOrder", "The 3D canvas in front or behind the 2D canvas. 0=3D In Front, 1=3D Behind");
@@ -109,11 +119,17 @@ AddExpression(2, ef_return_number, "Canvas Positioning", "Canvas 3D", "CanvasPos
 AddExpression(3, ef_return_number, "Hotspot X", "Canvas 3D", "HotspotX", "The location of the hot spot in the object.");
 AddExpression(4, ef_return_number, "Hotspot Y", "Canvas 3D", "HotspotY", "The location of the hot spot in the object.");
 AddExpression(5, ef_return_number, "Pixels Per 3D Unit", "Canvas 3D", "PixelsPer3DUnit", "Number of 2D pixels per 3D unit, used for 2D to 3D distances translation");
-AddExpression(6, ef_return_string, "Ambient light Color", "Ambient Light", "AmbientLightColor", "Ambient light color in RGB format");
+AddExpression(6, ef_return_number, "Ambient light Color", "Ambient Light", "AmbientLightColor", "Ambient light color in RGB format");
 AddExpression(7, ef_return_number, "Ambient light Intensity", "Ambient Light", "AmbientLightIntensity", "How bright is the light");
 AddExpression(8, ef_return_number, "Field Of View (FOV)", "Camera", "Fov", "How wide is the field of view of the camera in degrees.");
 AddExpression(9, ef_return_number, "Near", "Camera", "Near", "The closest distance an object will be drawn in 2D units.");
 AddExpression(10, ef_return_number, "Far", "Camera", "Far", "The furthest distance an object will be drawn in 2D units.");
+AddExpression(11, ef_return_number, "Fog Type", "Fog", "FogType", "The Fog Type.");
+AddExpression(12, ef_return_number, "Fog Color", "Fog", "FogColor", "The Fog Color.");
+AddExpression(13, ef_return_number, "Density ", "Fog", "FogDensity", "How fast the fog will grow dense. Only applies on Exponential Squared Fog");
+AddExpression(14, ef_return_number, "Fog Near", "Fog", "FogNear", "The Fog Near Distance. Only applies for Linear Fog.");
+AddExpression(15, ef_return_number, "Fog Far", "Fog", "FogFar", "The Fog Far Distance. Only applies for Linear Fog.");
+AddExpression(16, ef_return_number, "Scene Background Color", "Scene", "SceneBackgroundColor", "The Scene Background Color.");
 
 ////////////////////////////////////////
 ACESDone();
