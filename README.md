@@ -68,24 +68,24 @@ Creates a secondary canvas to render Three JS objects. It provides basic setting
 | Name | Type | Description | Parameters |
 |------|------|-------------|------------|
 | | |**Canvas 3D**| |
-|**Canvas Order**<br/>**Usage:** `SimpleThree.CanvasOrder`|`number`| The 3D canvas in front or behind the 2D canvas. 0=3D In Front, 1=3D Behind |  |
-|**Canvas Sizing**<br/>**Usage:** `SimpleThree.CanvasSizing`|`number`| Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout. 0=In sync with Screen, 1=Use Object Size |  |
-|**Canvas Positioning**<br/>**Usage:** `SimpleThree.CanvasPositioning`|`number`| Keep the 3D canvas at the top-left or use the object's position. 0=Top-Left, 1=Use Object Position |  |
-|**Hotspot X**<br/>**Usage:** `SimpleThree.HotspotX`|`number`| The location of the hot spot in the object. |  |
-|**Hotspot Y**<br/>**Usage:** `SimpleThree.HotspotY`|`number`| The location of the hot spot in the object. |  |
-|**Pixels Per 3D Unit**<br/>**Usage:** `SimpleThree.PixelsPer3DUnit`|`number`| Number of 2D pixels per 3D unit, used for 2D to 3D distances translation |  |
+|**Canvas Order**<br/><small>**Usage:** `SimpleThree.CanvasOrder`</small>|`number`| The 3D canvas in front or behind the 2D canvas. 0=3D In Front, 1=3D Behind |  |
+|**Canvas Sizing**<br/><small>**Usage:** `SimpleThree.CanvasSizing`</small>|`number`| Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout. 0=In sync with Screen, 1=Use Object Size |  |
+|**Canvas Positioning**<br/><small>**Usage:** `SimpleThree.CanvasPositioning`</small>|`number`| Keep the 3D canvas at the top-left or use the object's position. 0=Top-Left, 1=Use Object Position |  |
+|**Hotspot X**<br/><small>**Usage:** `SimpleThree.HotspotX`</small>|`number`| The location of the hot spot in the object. |  |
+|**Hotspot Y**<br/><small>**Usage:** `SimpleThree.HotspotY`</small>|`number`| The location of the hot spot in the object. |  |
+|**Pixels Per 3D Unit**<br/><small>**Usage:** `SimpleThree.PixelsPer3DUnit`</small>|`number`| Number of 2D pixels per 3D unit, used for 2D to 3D distances translation |  |
 | | |**Ambient Light**| |
-|**Ambient light Color**<br/>**Usage:** `SimpleThree.AmbientLightColor`|`number`| Ambient light color in RGB format |  |
-|**Ambient light Intensity**<br/>**Usage:** `SimpleThree.AmbientLightIntensity`|`number`| How bright is the light |  |
+|**Ambient light Color**<br/><small>**Usage:** `SimpleThree.AmbientLightColor`</small>|`number`| Ambient light color in RGB format |  |
+|**Ambient light Intensity**<br/><small>**Usage:** `SimpleThree.AmbientLightIntensity`</small>|`number`| How bright is the light |  |
 | | |**Camera**| |
-|**Field Of View (FOV)**<br/>**Usage:** `SimpleThree.Fov`|`number`| How wide is the field of view of the camera in degrees. |  |
-|**Near**<br/>**Usage:** `SimpleThree.Near`|`number`| The closest distance an object will be drawn in 2D units. |  |
-|**Far**<br/>**Usage:** `SimpleThree.Far`|`number`| The furthest distance an object will be drawn in 2D units. |  |
+|**Field Of View (FOV)**<br/><small>**Usage:** `SimpleThree.Fov`</small>|`number`| How wide is the field of view of the camera in degrees. |  |
+|**Near**<br/><small>**Usage:** `SimpleThree.Near`</small>|`number`| The closest distance an object will be drawn in 2D units. |  |
+|**Far**<br/><small>**Usage:** `SimpleThree.Far`</small>|`number`| The furthest distance an object will be drawn in 2D units. |  |
 | | |**Fog**| |
-|**Fog Type**<br/>**Usage:** `SimpleThree.FogType`|`number`| The Fog Type. |  |
-|**Fog Color**<br/>**Usage:** `SimpleThree.FogColor`|`number`| The Fog Color. |  |
-|**Density**<br/>**Usage:** `SimpleThree.FogDensity`|`number`| How fast the fog will grow dense. Only applies on Exponential Squared Fog |  |
-|**Fog Near**<br/>**Usage:** `SimpleThree.FogNear`|`number`| The Fog Near Distance. Only applies for Linear Fog. |  |
-|**Fog Far**<br/>**Usage:** `SimpleThree.FogFar`|`number`| The Fog Far Distance. Only applies for Linear Fog. |  |
+|**Fog Type**<br/><small>**Usage:** `SimpleThree.FogType`</small>|`number`| The Fog Type. |  |
+|**Fog Color**<br/><small>**Usage:** `SimpleThree.FogColor`</small>|`number`| The Fog Color. |  |
+|**Density**<br/><small>**Usage:** `SimpleThree.FogDensity`</small>|`number`| How fast the fog will grow dense. Only applies on Exponential Squared Fog |  |
+|**Fog Near**<br/><small>**Usage:** `SimpleThree.FogNear`</small>|`number`| The Fog Near Distance. Only applies for Linear Fog. |  |
+|**Fog Far**<br/><small>**Usage:** `SimpleThree.FogFar`</small>|`number`| The Fog Far Distance. Only applies for Linear Fog. |  |
 | | |**Scene**| |
-|**Scene Background Color**<br/>**Usage:** `SimpleThree.SceneBackgroundColor`|`number`| The Scene Background Color. |  |
+|**Scene Background Color**<br/><small>**Usage:** `SimpleThree.SceneBackgroundColor`</small>|`number`| The Scene Background Color. |  |
