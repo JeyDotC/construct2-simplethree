@@ -20,8 +20,16 @@ Creates a secondary canvas to render Three JS objects. It provides basic setting
 |**Ambient light Intensity**| _float_ | How bright is the light Default value: `1.5` |  |
 | | | **Camera Options**| |
 |**Field Of View (FOV)**| _float_ | How wide is the field of view of the camera in degrees. Default value: `75` |  |
-|**Near**| _float_ | The closest distance an object will be drawn in 3D units. Default value: `0.1` |  |
-|**Far**| _float_ | The furthest distance an object will be drawn in 3D units. Default value: `1000` |  |
+|**Near**| _float_ | The closest distance an object will be drawn in 2D units. Default value: `3.2` |  |
+|**Far**| _float_ | The furthest distance an object will be drawn in 2D units. Default value: `32000` |  |
+| | | **Fog**| |
+|**Fog Type**| _combo_ | Type of the scene Fog. Default value: `None` | - None<br/>- Linear<br/>- Exponential Squared |
+|**Fog Color**| _color_ | Color of the Fog. Default value: `ffffff` |  |
+|**Fog Density (Exponential Squared Fog Only)**| _float_ | Defines how fast the fog will grow dense. Default value: `0.06` |  |
+|**Fog Near (Linear Fog Only)**| _float_ | The minimum distance to start applying fog. Objects that are less than 'near' units from the active camera won't be affected by fog. Default value: `3.2` |  |
+|**Fog Far (Linear Fog Only)**| _float_ | The maximum distance at which fog stops being calculated and applied. Objects that are more than 'far' units away from the active camera won't be affected by fog. Default value: `300` |  |
+| | | **Scene**| |
+|**Scene Background Color**| _color_ | Color of the Scene's background. Default value: `0` |  |
 
 # ACES
 
@@ -33,21 +41,32 @@ Creates a secondary canvas to render Three JS objects. It provides basic setting
 |**Set Camera position from 2D coordinates**| Set the camera position using 2D coordinates. | - **Camera X** _number_: The capmera X in 2D Pixels. <br />- **Camera Y** _number_: The camera Y in 2D Pixels. (Will be translated to camera's Z axis.) <br />- **Camera Elevation** _number_ = `32`: The camera elevation in 2D Pixels. (Will be translated to camera's Y axis.)  |
 |**Set Camera angle from 2D angle**| Set Camera angle using 2D angle in degrees. This gets translated into the camera's Y angle in radians. | - **Angle** _number_: The camera angle in degrees. (Will be translated to camera's Y axis angle in Radians.)  |
 |**Set Field Of View (FOV)**| How wide is the field of view of the camera in degrees. | - **Field Of View** _number_ = `75`: The Field Of View (FOV) in degrees. (Will be translated to camera's Y axis angle in Radians.)  |
-|**Set Camera Near Distance**| Set The closest distance an object will be drawn in 3D units. | - **Near** _number_ = `0.1`: The closest distance an object will be drawn in 3D units.  |
-|**Set Camera Far Distance**| Set The furthest distance an object will be drawn in 3D units. | - **Far** _number_ = `1000`: The furthest distance an object will be drawn in 3D units.  |
+|**Set Camera Near Distance**| Set The closest distance an object will be drawn in 2D units. | - **Near** _number_ = `3.2`: The closest distance an object will be drawn in 2D units.  |
+|**Set Camera Far Distance**| Set The furthest distance an object will be drawn in 2D units. | - **Far** _number_ = `32000`: The furthest distance an object will be drawn in 2D units.  |
 | |**Canvas 3D**| |
 |**Set Canvas Order**| Put the 3D canvas in front or behind the 2D canvas. | - **Canvas Order** _combo_: If the 3D canvas will be in front or behind the 2D canvas.  **Options**: (`3D In Front`, `3D Behind`) |
 |**Set Canvas Sizing**| Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout. | - **Canvas Sizing** _combo_: The canvas size behavior.  **Options**: (`In sync with Screen`, `Use Object Size`) |
 |**Set Canvas Positioning**| Keep the 3D canvas at the top-left or use the object's position. | - **Canvas Positioning** _combo_: The canvas position behavior.  **Options**: (`Top-Left`, `Use Object Position`) |
 |**Set Pixels Per 3D Unit**| Set the Number of 2D pixels per 3D unit, used for 2D to 3D distances translation. | - **Pixels Per 3D Unit** _number_ = `32`: Number of 2D pixels per 3D unit  |
 | |**Ambient Light**| |
-|**Set The Ambient light Color**| Set the Ambient light Color. | - **Ambient light Color** _string_ = `#ffffff`: Ambient light color in CSS-style string  |
+|**Set The Ambient light Color**| Set the Ambient light Color. | - **Ambient light Color** _string_ = `"#ffffff"`: Ambient light color in CSS-style string  |
 |**Set The Ambient Light Intensity**| Set How bright is the ambient light. | - **Ambient light Intensity** _number_ = `1.5`: How bright is the ambient light  |
+|**Set The Ambient light Color From Number**| Set the Ambient light Color. | - **Ambient light Color** _string_ = `rgb(255, 255, 255)`: Ambient light color From Number  |
+| |**Fog**| |
+|**Set Fog Type**| Set The Fog Type. | - **Fog Type** _combo_: The Type of Fog, use None to have no fog at all.  **Options**: (`None`, `Linear`, `Exponential Squared`) |
+|**Set Fog Color**| Set The Fog Color. | - **Fog Color** _string_ = `"#ffffff"`: Fog color in CSS-style string  |
+|**Set Density**| Defines how fast the fog will grow dense. Only applies on Exponential Squared Fog | - **Fog Density** _number_ = `0.06`: How fast the fog will grow dense.  |
+|**Set Fog Near**| Set The Fog Near Distance. Only applies for Linear Fog. | - **Fog Near Distance** _number_ = `3.2`: Distance in 2D units.  |
+|**Set Fog Far**| Set The Fog Far Distance. Only applies for Linear Fog. | - **Fog Far Distance** _number_ = `300`: Distance in 2D units.  |
+|**Set Fog Color From Number**| Set The Fog Color. | - **Fog Color** _number_ = `rgb(255, 255, 255)`: Fog color From Number  |
+| |**Scene**| |
+|**Set Scene Background Color**| Set The Scene Background Color. | - **Scene Background Color** _string_ = `"#ffffff"`: Color in CSS-style string  |
+|**Set Scene Background Color From Number**| Set The Scene Background Color. | - **Scene Background Color** _number_ = `16777215`: Color using a number  |
 
 ## Expressions
 
-| Name | Type | Description | Options |
-|------|------|-------------|---------|
+| Name | Type | Description | Parameters |
+|------|------|-------------|------------|
 | | |**Canvas 3D**| |
 |**Canvas Order**<br/>**Usage:** `SimpleThree.CanvasOrder`|`number`| The 3D canvas in front or behind the 2D canvas. 0=3D In Front, 1=3D Behind |  |
 |**Canvas Sizing**<br/>**Usage:** `SimpleThree.CanvasSizing`|`number`| Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout. 0=In sync with Screen, 1=Use Object Size |  |
@@ -56,9 +75,17 @@ Creates a secondary canvas to render Three JS objects. It provides basic setting
 |**Hotspot Y**<br/>**Usage:** `SimpleThree.HotspotY`|`number`| The location of the hot spot in the object. |  |
 |**Pixels Per 3D Unit**<br/>**Usage:** `SimpleThree.PixelsPer3DUnit`|`number`| Number of 2D pixels per 3D unit, used for 2D to 3D distances translation |  |
 | | |**Ambient Light**| |
-|**Ambient light Color**<br/>**Usage:** `SimpleThree.AmbientLightColor`|`string`| Ambient light color in RGB format |  |
+|**Ambient light Color**<br/>**Usage:** `SimpleThree.AmbientLightColor`|`number`| Ambient light color in RGB format |  |
 |**Ambient light Intensity**<br/>**Usage:** `SimpleThree.AmbientLightIntensity`|`number`| How bright is the light |  |
 | | |**Camera**| |
 |**Field Of View (FOV)**<br/>**Usage:** `SimpleThree.Fov`|`number`| How wide is the field of view of the camera in degrees. |  |
-|**Near**<br/>**Usage:** `SimpleThree.Near`|`number`| The closest distance an object will be drawn in 3D units. |  |
-|**Far**<br/>**Usage:** `SimpleThree.Far`|`number`| The furthest distance an object will be drawn in 3D units. |  |
+|**Near**<br/>**Usage:** `SimpleThree.Near`|`number`| The closest distance an object will be drawn in 2D units. |  |
+|**Far**<br/>**Usage:** `SimpleThree.Far`|`number`| The furthest distance an object will be drawn in 2D units. |  |
+| | |**Fog**| |
+|**Fog Type**<br/>**Usage:** `SimpleThree.FogType`|`number`| The Fog Type. |  |
+|**Fog Color**<br/>**Usage:** `SimpleThree.FogColor`|`number`| The Fog Color. |  |
+|**Density**<br/>**Usage:** `SimpleThree.FogDensity`|`number`| How fast the fog will grow dense. Only applies on Exponential Squared Fog |  |
+|**Fog Near**<br/>**Usage:** `SimpleThree.FogNear`|`number`| The Fog Near Distance. Only applies for Linear Fog. |  |
+|**Fog Far**<br/>**Usage:** `SimpleThree.FogFar`|`number`| The Fog Far Distance. Only applies for Linear Fog. |  |
+| | |**Scene**| |
+|**Scene Background Color**<br/>**Usage:** `SimpleThree.SceneBackgroundColor`|`number`| The Scene Background Color. |  |
