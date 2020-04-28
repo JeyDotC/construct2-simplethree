@@ -26,6 +26,28 @@ cr.plugins_.SimpleThree = function (runtime) {
 };
 
 (function () {
+
+    const CanvasOrder = {
+        InFront: 0,
+        Behind: 1,
+    };
+
+    const CanvasSizing = {
+        InSyncWithScreen: 0,
+        UseObjectSize: 1,
+    };
+
+    const CanvasPositioning = {
+        TopLeft: 0,
+        UseObjectPosition: 1,
+    };
+
+    const FogType = {
+        None: 0,
+        Linear: 1,
+        ExponentialSquared: 2,
+    };
+
     const pluginProto = cr.plugins_.SimpleThree.prototype;
 
     /////////////////////////////////////
@@ -52,6 +74,7 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.camera = undefined;
         this.canvas3d = undefined;
         this.ambientLight = undefined;
+        this.fog = undefined;
 
         this.canvasOrder = CanvasOrder.InFront;
         this.canvasSizing = CanvasSizing.InSyncWithScreen;
@@ -62,29 +85,43 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.fov = 75;
         this.near = 0.5;
         this.far = 1000;
+        // Fog
+        this.fogType = FogType.None;
+        this.fogColor = cr.RGB(255, 255, 255);
+        this.fogDensity = 0.00025;
+        this.fogNear = 1;
+        this.fogFar = 1000;
+        // Scene
+        this.seceneBackgroundColor = undefined;
     };
 
     const instanceProto = pluginProto.Instance.prototype;
-
-    const CanvasOrder = {
-        InFront: 0,
-        Behind: 1
-    };
-    const CanvasSizing = {
-        InSyncWithScreen: 0,
-        UseObjectSize: 1
-    };
-    const CanvasPositioning = {
-        TopLeft: 0,
-        UseObjectPosition: 1
-    };
 
     instanceProto.pixelsTo3DUnits = function (distance2D) {
         return distance2D / (this.pixelsPer3DUnit || 1);
     };
 
+    instanceProto.threeDimentionalUnitsToPixels = function (distance3D) {
+        return distance3D * (this.pixelsPer3DUnit || 1);
+    };
+
     instanceProto.angleTo3D = function (angle) {
         return -cr.to_radians(angle + 90);
+    };
+
+    instanceProto.configureFog = function () {
+        switch (this.fogType) {
+            case FogType.None:
+                return;
+            case FogType.Linear:
+                this.scene.fog = new THREE.Fog(this.fogColor, this.fogNear, this.fogFar);
+                break;
+            case FogType.ExponentialSquared:
+                this.scene.fog = new THREE.FogExp2(this.fogColor, this.fogDensity);
+                break;
+            default:
+                break;
+        }
     };
 
     instanceProto.onCreate = function () {
@@ -95,8 +132,16 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.ambientLightColor = new THREE.Color(this.properties[5]);
         this.ambientLightIntensity = this.properties[6];
         this.fov = this.properties[7];
-        this.near = this.properties[8];
-        this.far = this.properties[9];
+        this.near = this.pixelsTo3DUnits(this.properties[8]);
+        this.far = this.pixelsTo3DUnits(this.properties[9]);
+        // Fog
+        this.fogType = this.properties[10];
+        this.fogColor = new THREE.Color(this.properties[11]);
+        this.fogDensity = this.properties[12];
+        this.fogNear = this.pixelsTo3DUnits(this.properties[13]);
+        this.fogFar = this.pixelsTo3DUnits(this.properties[14]);
+        // Scene
+        this.seceneBackgroundColor = new THREE.Color(this.properties[15]);
 
         console.log(this);
 
@@ -112,6 +157,9 @@ cr.plugins_.SimpleThree = function (runtime) {
         }
 
         this.scene = new THREE.Scene();
+        this.scene.background = this.seceneBackgroundColor;
+
+        this.configureFog();
 
         this.camera = new THREE.PerspectiveCamera(this.fov, this.width / this.height, this.near, this.far);
         this.camera.position.z = 5;
@@ -329,23 +377,55 @@ cr.plugins_.SimpleThree = function (runtime) {
     };
 
     Acts.prototype.SetCameraNear = function (cameraNear) {
-        if (cameraNear == this.near) {
+        const newCameraNear = this.pixelsTo3DUnits(cameraNear);
+        if (newCameraNear == this.near) {
             return;
         }
-        this.near = this.camera.near = cameraNear;
+        this.near = this.camera.near = newCameraNear;
         this.camera.updateProjectionMatrix();
         this.runtime.redraw = true;
     };
 
     Acts.prototype.SetCameraFar = function (cameraFar) {
-        if (cameraFar == this.far) {
+        const newCameraFar = this.pixelsTo3DUnits(cameraFar);
+        if (newCameraFar == this.far) {
             return;
         }
-        this.far = this.camera.far = cameraFar;
+        this.far = this.camera.far = newCameraFar;
         this.camera.updateProjectionMatrix();
         this.runtime.redraw = true;
     };
 
+    Acts.prototype.SetFogType = function (fogType) {
+        this.fogType = fogType;
+        this.configureFog();
+        this.runtime.redraw = true;
+    };
+
+    Acts.prototype.SetFogColor = function (fogColor) {
+        this.fogColor = new THREE.Color(fogColor);
+        this.configureFog();
+        this.runtime.redraw = true;
+    };
+    Acts.prototype.SetFogDensity = function (fogDensity) {
+        this.fogDensity = fogDensity;
+        this.configureFog();
+        this.runtime.redraw = true;
+    };
+    Acts.prototype.SetFogNear = function (fogNear) {
+        this.fogNear = this.pixelsPer3DUnit(fogNear);
+        this.configureFog();
+        this.runtime.redraw = true;
+    };
+    Acts.prototype.SetFogFar = function (fogFar) {
+        this.fogFar = this.pixelsPer3DUnit(fogFar);
+        this.configureFog();
+        this.runtime.redraw = true;
+    };
+    Acts.prototype.SetSceneBackgroundColor = function (sceneBackgroundColor) {
+        this.scene.background = this.seceneBackgroundColor = new THREE.Color(sceneBackgroundColor);
+        this.runtime.redraw = true;
+    };
 
     pluginProto.acts = new Acts();
 
@@ -391,11 +471,11 @@ cr.plugins_.SimpleThree = function (runtime) {
     };
 
     Exps.prototype.Near = function (ret) {
-        ret.set_float(this.near);
+        ret.set_float(this.threeDimentionalUnitsToPixels(this.near));
     };
 
     Exps.prototype.Far = function (ret) {
-        ret.set_float(this.far);
+        ret.set_float(this.threeDimentionalUnitsToPixels(this.far));
     };
 
 

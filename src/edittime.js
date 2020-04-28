@@ -32,7 +32,7 @@ function GetPluginSettings() {
         "flags": 0						// uncomment lines to enable flags...
             | pf_position_aces | pf_size_aces // | pf_effects
     };
-};
+}
 
 if (typeof module !== 'undefined') {
     module.exports = {settings: GetPluginSettings(), type: 'Plugin'};
@@ -43,7 +43,7 @@ if (typeof module !== 'undefined') {
 AddNumberParam("Camera X", "The capmera X in 2D Pixels.", 0);
 AddNumberParam("Camera Y", "The camera Y in 2D Pixels. (Will be translated to camera's Z axis.)", 0);
 AddNumberParam("Camera Elevation", "The camera elevation in 2D Pixels. (Will be translated to camera's Y axis.)", 32);
-AddAction(0, 0, "Set Camera position from 2D coordinates", "Camera", "Camera position to (<b>{0}</b>, <b>{1}</b>) and elevation of <b>{3}</b>", "Set the camera position using 2D coordinates.", "SetCameraPositionFrom2D");
+AddAction(0, 0, "Set Camera position from 2D coordinates", "Camera", "Camera position to (<b>{0}</b>, <b>{1}</b>) and elevation of <b>{2}</b>", "Set the camera position using 2D coordinates.", "SetCameraPositionFrom2D");
 
 AddNumberParam("Angle", "The camera angle in degrees. (Will be translated to camera's Y axis angle in Radians.)", 0);
 AddAction(1, 0, "Set Camera angle from 2D angle", "Camera", "Camera angle to (<b>{0}</b>) degrees", "Set Camera angle using 2D angle in degrees. This gets translated into the camera's Y angle in radians.", "SetCameraAngleFrom2D");
@@ -75,11 +75,32 @@ AddAction(7, 0, "Set The Ambient Light Intensity", "Ambient Light", "Ambient Lig
 AddNumberParam("Field Of View", "The Field Of View (FOV) in degrees. (Will be translated to camera's Y axis angle in Radians.)", 75);
 AddAction(8, 0, "Set Field Of View (FOV)", "Camera", "Camera FOV is (<b>{0}</b>) degrees now", "How wide is the field of view of the camera in degrees.", "SetCameraFOV");
 
-AddNumberParam("Near", "The closest distance an object will be drawn in 3D units.", 0.1);
-AddAction(9, 0, "Set Camera Near Distance", "Camera", "Camera near distance is (<b>{0}</b>) 3D Units now", "Set The closest distance an object will be drawn in 3D units.", "SetCameraNear");
+AddNumberParam("Near", "The closest distance an object will be drawn in 2D units.", 3.2);
+AddAction(9, 0, "Set Camera Near Distance", "Camera", "Camera near distance is (<b>{0}</b>) 2D Units now", "Set The closest distance an object will be drawn in 2D units.", "SetCameraNear");
 
-AddNumberParam("Far", "The furthest distance an object will be drawn in 3D units.", 1000);
-AddAction(10, 0, "Set Camera Far Distance", "Camera", "Camera far distance is (<b>{0}</b>) 3D Units now", "Set The furthest distance an object will be drawn in 3D units.", "SetCameraFar");
+AddNumberParam("Far", "The furthest distance an object will be drawn in 2D units.", 32000);
+AddAction(10, 0, "Set Camera Far Distance", "Camera", "Camera far distance is (<b>{0}</b>) 2D Units now", "Set The furthest distance an object will be drawn in 2D units.", "SetCameraFar");
+
+AddComboParamOption('None');
+AddComboParamOption('Linear');
+AddComboParamOption('Exponential Squared');
+AddComboParam('Fog Type', 'The Type of Fog, use None to have no fog at all.', 0);
+AddAction(11, 0, "Set Fog Type", "Fog", "Fog Type is <b>{0}</b> now", "Set The Fog Type.", "SetFogType");
+
+AddStringParam('Fog Color', 'Fog color in CSS-style string', "#ffffff");
+AddAction(12, 0, "Set Fog Color", "Fog", "Fog Color is <b>{0}</b> now", "Set The Fog Color.", "SetFogColor");
+
+AddNumberParam("Fog Density", "How fast the fog will grow dense.", 0.06);
+AddAction(13, 0, "Set Density ", "Fog", "Fog Density is <b>{0}</b> now", "Defines how fast the fog will grow dense. Only applies on Exponential Squared Fog", "SetFogDensity");
+
+AddNumberParam("Fog Near Distance", "Distance in 2D units.", 3.2);
+AddAction(14, 0, "Set Fog Near", "Fog", "Fog Near is <b>{0}</b> now", "Set The Fog Near Distance. Only applies for Linear Fog.", "SetFogNear");
+
+AddNumberParam("Fog Far Distance", "Distance in 2D units.", 300);
+AddAction(15, 0, "Set Fog Far", "Fog", "Fog Near is <b>{0}</b> now", "Set The Fog Far Distance. Only applies for Linear Fog.", "SetFogFar");
+
+AddStringParam('Scene Background Color', 'Color in CSS-style string', "#ffffff");
+AddAction(16, 0, "Set Scene Background Color", "Fog", "Scene Background Color is <b>{0}</b> now", "Set The Scene Background Color.", "SetSceneBackgroundColor");
 
 // Expressions
 AddExpression(0, ef_return_number, "Canvas Order", "Canvas 3D", "CanvasOrder", "The 3D canvas in front or behind the 2D canvas. 0=3D In Front, 1=3D Behind");
@@ -91,8 +112,8 @@ AddExpression(5, ef_return_number, "Pixels Per 3D Unit", "Canvas 3D", "PixelsPer
 AddExpression(6, ef_return_string, "Ambient light Color", "Ambient Light", "AmbientLightColor", "Ambient light color in RGB format");
 AddExpression(7, ef_return_number, "Ambient light Intensity", "Ambient Light", "AmbientLightIntensity", "How bright is the light");
 AddExpression(8, ef_return_number, "Field Of View (FOV)", "Camera", "Fov", "How wide is the field of view of the camera in degrees.");
-AddExpression(9, ef_return_number, "Near", "Camera", "Near", "The closest distance an object will be drawn in 3D units.");
-AddExpression(10, ef_return_number, "Far", "Camera", "Far", "The furthest distance an object will be drawn in 3D units.");
+AddExpression(9, ef_return_number, "Near", "Camera", "Near", "The closest distance an object will be drawn in 2D units.");
+AddExpression(10, ef_return_number, "Far", "Camera", "Far", "The furthest distance an object will be drawn in 2D units.");
 
 ////////////////////////////////////////
 ACESDone();
@@ -116,8 +137,16 @@ var property_list = [
     new cr.Property(ept_float, "Ambient light Intensity", 1.5, "How bright is the light"),
     new cr.Property(ept_section, "Camera Options"),
     new cr.Property(ept_float, "Field Of View (FOV)", 75, "How wide is the field of view of the camera in degrees."),
-    new cr.Property(ept_float, "Near", 0.1, "The closest distance an object will be drawn in 3D units."),
-    new cr.Property(ept_float, "Far", 1000, "The furthest distance an object will be drawn in 3D units."),
+    new cr.Property(ept_float, "Near", 3.2, "The closest distance an object will be drawn in 2D units."),
+    new cr.Property(ept_float, "Far", 32000, "The furthest distance an object will be drawn in 2D units."),
+    new cr.Property(ept_section, "Fog"),
+    new cr.Property(ept_combo, "Fog Type", "None", "Type of the scene Fog.", "None|Linear|Exponential Squared"),
+    new cr.Property(ept_color, "Fog Color", cr.RGB(255, 255, 255), "Color of the Fog."),
+    new cr.Property(ept_float, "Fog Density (Exponential Squared Fog Only)", 0.06, "Defines how fast the fog will grow dense."),
+    new cr.Property(ept_float, "Fog Near (Linear Fog Only)", 3.2, "The minimum distance to start applying fog. Objects that are less than 'near' units from the active camera won't be affected by fog."),
+    new cr.Property(ept_float, "Fog Far (Linear Fog Only)", 300, "The maximum distance at which fog stops being calculated and applied. Objects that are more than 'far' units away from the active camera won't be affected by fog."),
+    new cr.Property(ept_section, "Scene"),
+    new cr.Property(ept_color, "Scene Background Color", cr.RGB(0, 0, 0), "Color of the Scene's background."),
 ];
 
 // Called by IDE when a new behavior type is to be created
@@ -166,8 +195,7 @@ IDEInstance.prototype.Draw = function (renderer) {
     const instanceRect = this.instance.GetBoundingRect();
     const quad = new cr.quad();
     quad.set_from_rect(instanceRect);
-    renderer.Fill(quad, cr.RGB(0, 0, 0))
-
+    renderer.Fill(quad, this.properties["Scene Background Color"])
 };
 
 IDEInstance.prototype.OnRendererReleased = function (renderer) {
