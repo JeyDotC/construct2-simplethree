@@ -112,6 +112,7 @@ cr.plugins_.SimpleThree = function (runtime) {
     instanceProto.configureFog = function () {
         switch (this.fogType) {
             case FogType.None:
+                this.scene.fog = undefined;
                 return;
             case FogType.Linear:
                 this.scene.fog = new THREE.Fog(this.fogColor, this.fogNear, this.fogFar);
@@ -125,6 +126,7 @@ cr.plugins_.SimpleThree = function (runtime) {
     };
 
     instanceProto.onCreate = function () {
+        console.log('On Create');
         this.canvasOrder = this.properties[0];
         this.canvasSizing = this.properties[1];
         this.canvasPositioning = this.properties[2];
@@ -142,8 +144,6 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.fogFar = this.pixelsTo3DUnits(this.properties[14]);
         // Scene
         this.sceneBackgroundColor = new THREE.Color(this.properties[15]);
-
-        console.log(this);
 
         this.canvas3d = createCanvas();
 
@@ -216,6 +216,8 @@ cr.plugins_.SimpleThree = function (runtime) {
         // called when associated object is being destroyed
         // note runtime may keep the object and plugin alive after this call for recycling;
         // release, recycle or reset any references here as necessary
+        this.scene.dispose();
+        this.renderer.dispose();
         this.canvas3d.remove();
         window.removeEventListener('resize', this.updateCanvas3d.bind(this));
     };
@@ -234,9 +236,25 @@ cr.plugins_.SimpleThree = function (runtime) {
         // note you MUST use double-quote syntax (e.g. "property": value) to prevent
         // Closure Compiler renaming and breaking the save format
         return {
-            // e.g.
-            "n": this.name,
-            "t": this.tags
+            "o": this.canvasOrder,
+            "s": this.canvasSizing,
+            "p": this.canvasPositioning,
+            "p3": this.pixelsPer3DUnit,
+            "lc": this.ambientLightColor.getHex(),
+            "li": this.ambientLightIntensity,
+            "x": this.threeDimentionalUnitsToPixels(this.camera.position.x),
+            "y": this.threeDimentionalUnitsToPixels(this.camera.position.z),
+            "z": this.threeDimentionalUnitsToPixels(this.camera.position.y),
+            "a": cr.to_degrees(-this.camera.rotation.y),
+            "fv": this.fov,
+            "n": this.threeDimentionalUnitsToPixels(this.near),
+            "f": this.threeDimentionalUnitsToPixels(this.far),
+            "ft": this.fogType,
+            "fc": this.fogColor.getHex(),
+            "fd": this.fogDensity,
+            "fn": this.threeDimentionalUnitsToPixels(this.fogNear),
+            "ff": this.threeDimentionalUnitsToPixels(this.fogFar),
+            "bg": this.sceneBackgroundColor.getHex(),
         };
     };
 
@@ -247,8 +265,27 @@ cr.plugins_.SimpleThree = function (runtime) {
         // this.myValue = o["myValue"];
         // note you MUST use double-quote syntax (e.g. o["property"]) to prevent
         // Closure Compiler renaming and breaking the save format
-        this.name = o["n"];
-        this.tags = o["t"];
+        const acts = this.plugin.acts;
+
+        acts.SetCanvasOrder.bind(this)(parseInt(o["o"]));
+        acts.SetCanvasSizing.bind(this)(parseInt(o["s"]));
+        acts.SetCanvasPositioning.bind(this)(parseInt(o["p"]));
+        acts.SetPixelsPer3DUnit.bind(this)(o["p3"]);
+        acts.SetAmbientLightColor.bind(this)(o["lc"]);
+        acts.SetAmbientLightIntensity.bind(this)(o["li"]);
+        this.camera.position.x = this.pixelsTo3DUnits(o["x"]);
+        this.camera.position.z = this.pixelsTo3DUnits(o["y"]);
+        this.camera.position.y = this.pixelsTo3DUnits(o["z"]);
+        acts.SetCameraAngleFrom2D.bind(this)(o["a"]);
+        acts.SetCameraFOV.bind(this)(o["fv"]);
+        acts.SetCameraNear.bind(this)(o["n"]);
+        acts.SetCameraFar.bind(this)(o["f"]);
+        acts.SetFogType.bind(this)(o["ft"]);
+        acts.SetFogColor.bind(this)(o["fc"]);
+        acts.SetFogDensity.bind(this)(o["fd"]);
+        acts.SetFogNear.bind(this)(o["fn"]);
+        acts.SetFogFar.bind(this)(o["ff"]);
+        acts.SetSceneBackgroundColor.bind(this)(o["bg"]);
     };
 
     instanceProto.tick = function () {
@@ -319,13 +356,13 @@ cr.plugins_.SimpleThree = function (runtime) {
         const acts = this.plugin.acts;
         switch (name) {
             case "canvasOrder"          :
-                acts.SetCanvasOrder.bind(this)(value);
+                acts.SetCanvasOrder.bind(this)(parseInt(value));
                 break;
             case "canvasSizing"         :
-                acts.SetCanvasSizing.bind(this)(value);
+                acts.SetCanvasSizing.bind(this)(parseInt(value));
                 break;
             case "canvasPositioning"    :
-                acts.SetCanvasPositioning.bind(this)(value);
+                acts.SetCanvasPositioning.bind(this)(parseInt(value));
                 break;
             case "pixelsPer3DUnit"      :
                 acts.SetPixelsPer3DUnit.bind(this)(value);
