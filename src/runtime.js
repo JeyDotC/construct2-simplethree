@@ -92,7 +92,7 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.fogNear = 1;
         this.fogFar = 1000;
         // Scene
-        this.seceneBackgroundColor = undefined;
+        this.sceneBackgroundColor = undefined;
     };
 
     const instanceProto = pluginProto.Instance.prototype;
@@ -141,7 +141,7 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.fogNear = this.pixelsTo3DUnits(this.properties[13]);
         this.fogFar = this.pixelsTo3DUnits(this.properties[14]);
         // Scene
-        this.seceneBackgroundColor = new THREE.Color(this.properties[15]);
+        this.sceneBackgroundColor = new THREE.Color(this.properties[15]);
 
         console.log(this);
 
@@ -157,7 +157,7 @@ cr.plugins_.SimpleThree = function (runtime) {
         }
 
         this.scene = new THREE.Scene();
-        this.scene.background = this.seceneBackgroundColor;
+        this.scene.background = this.sceneBackgroundColor;
 
         this.configureFog();
 
@@ -270,29 +270,112 @@ cr.plugins_.SimpleThree = function (runtime) {
         // "properties" is an array of individual debugger properties to display
         // with their name and value, and some other optional settings.
         propsections.push({
-            "title": this.type.name,
+            "title": `${this.type.name}: Canvas`,
             "properties": [
-                // Each property entry can use the following values:
-                // "name" (required): name of the property (must be unique within this section)
-                // "value" (required): a boolean, number or string for the value
-                // "html" (optional, default false): set to true to interpret the name and value
-                //									 as HTML strings rather than simple plain text
-                // "readonly" (optional, default false): set to true to disable editing the property
-                {"name": "Name", "value": this.name},
-                {"name": "Tags", "value": this.tags.join(',')}
+                {"name": "canvasOrder", "value": this.canvasOrder},
+                {"name": "canvasSizing", "value": this.canvasSizing},
+                {"name": "canvasPositioning", "value": this.canvasPositioning},
+                {"name": "pixelsPer3DUnit", "value": this.pixelsPer3DUnit},
+            ]
+        });
+        propsections.push({
+            "title": `${this.type.name}: Ambient Light`,
+            "properties": [
+                {"name": "ambientLightColor", "value": `#${this.ambientLightColor.getHexString()}`},
+                {"name": "ambientLightIntensity", "value": this.ambientLightIntensity},
+            ]
+        });
+        propsections.push({
+            "title": `${this.type.name}: Camera`,
+            "properties": [
+                {"name": "X", "value": this.threeDimentionalUnitsToPixels(this.camera.position.x)},
+                {"name": "Y", "value": this.threeDimentionalUnitsToPixels(this.camera.position.z)},
+                {"name": "Elevation", "value": this.threeDimentionalUnitsToPixels(this.camera.position.y)},
+                {"name": "Angle", "value": cr.to_degrees(-this.camera.rotation.y)},
+                {"name": "fov", "value": this.fov},
+                {"name": "near", "value": this.threeDimentionalUnitsToPixels(this.near)},
+                {"name": "far", "value": this.threeDimentionalUnitsToPixels(this.far)},
+            ]
+        });
+        propsections.push({
+            "title": `${this.type.name}: Fog`,
+            "properties": [
+                {"name": "fogType", "value": this.fogType},
+                {"name": "fogColor", "value": `#${this.fogColor.getHexString()}`},
+                {"name": "fogDensity", "value": this.fogDensity},
+                {"name": "fogNear", "value": this.threeDimentionalUnitsToPixels(this.fogNear)},
+                {"name": "fogFar", "value": this.threeDimentionalUnitsToPixels(this.fogFar)},
+            ]
+        });
+        propsections.push({
+            "title": `${this.type.name}: Scene`,
+            "properties": [
+                {"name": "sceneBackgroundColor", "value": `#${this.sceneBackgroundColor.getHexString()}`},
             ]
         });
     };
 
     instanceProto.onDebugValueEdited = function (header, name, value) {
-        // Called when a non-readonly property has been edited in the debugger. Usually you only
-        // will need 'name' (the property name) and 'value', but you can also use 'header' (the
-        // header title for the section) to distinguish properties with the same name.
-        if (name === "Name")
-            this.name = value;
-
-        if (name === "Tags")
-            this.tags = value.split(',');
+        const acts = this.plugin.acts;
+        switch (name) {
+            case "canvasOrder"          :
+                acts.SetCanvasOrder.bind(this)(value);
+                break;
+            case "canvasSizing"         :
+                acts.SetCanvasSizing.bind(this)(value);
+                break;
+            case "canvasPositioning"    :
+                acts.SetCanvasPositioning.bind(this)(value);
+                break;
+            case "pixelsPer3DUnit"      :
+                acts.SetPixelsPer3DUnit.bind(this)(value);
+                break;
+            case "ambientLightColor"    :
+                acts.SetAmbientLightColor.bind(this)(value);
+                break;
+            case "ambientLightIntensity":
+                acts.SetAmbientLightIntensity.bind(this)(value);
+                break;
+            case "X"         :
+                this.camera.position.x = this.pixelsTo3DUnits(value);
+                break;
+            case "Y"         :
+                this.camera.position.z = this.pixelsTo3DUnits(value);
+                break;
+            case "Elevation" :
+                this.camera.position.y = this.pixelsTo3DUnits(value);
+                break;
+            case "Angle"     :
+                acts.SetCameraAngleFrom2D.bind(this)(value);
+                break;
+            case "fov"                  :
+                acts.SetCameraFOV.bind(this)(value);
+                break;
+            case "near"                 :
+                acts.SetCameraNear.bind(this)(value);
+                break;
+            case "far"                  :
+                acts.SetCameraFar.bind(this)(value);
+                break;
+            case "fogType"              :
+                acts.SetFogType.bind(this)(value);
+                break;
+            case "fogColor"             :
+                acts.SetFogColor.bind(this)(value);
+                break;
+            case "fogDensity"           :
+                acts.SetFogDensity.bind(this)(value);
+                break;
+            case "fogNear"              :
+                acts.SetFogNear.bind(this)(value);
+                break;
+            case "fogFar"               :
+                acts.SetFogFar.bind(this)(value);
+                break;
+            case "sceneBackgroundColor":
+                acts.SetSceneBackgroundColor.bind(this)(value);
+                break;
+        }
     };
 
     /**END-PREVIEWONLY**/
@@ -423,7 +506,7 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.runtime.redraw = true;
     };
     Acts.prototype.SetSceneBackgroundColor = function (sceneBackgroundColor) {
-        this.scene.background = this.seceneBackgroundColor = new THREE.Color(sceneBackgroundColor);
+        this.scene.background = this.sceneBackgroundColor = new THREE.Color(sceneBackgroundColor);
         this.runtime.redraw = true;
     };
 
@@ -494,7 +577,7 @@ cr.plugins_.SimpleThree = function (runtime) {
         ret.set_float(this.threeDimentionalUnitsToPixels(this.fogFar));
     };
     Exps.prototype.SceneBackgroundColor = function (ret) {
-        ret.set_int(this.seceneBackgroundColor.getHex());
+        ret.set_int(this.sceneBackgroundColor.getHex());
     };
 
     pluginProto.exps = new Exps();
