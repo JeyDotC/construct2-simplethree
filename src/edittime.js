@@ -19,7 +19,7 @@ function GetPluginSettings() {
         "id": "SimpleThree",			// this is used to SimpleThree this behavior and is saved to the project; never change it
         "version": "1.0",					// (float in x.y format) Behavior version - C2 shows compatibility warnings based on this
         "description": [
-            "Creates a secondary canvas to render Three JS objects. It provides basic settings for Camera and Ambient Light.",
+            "Creates a secondary canvas to render Three JS objects. It provides basic settings for Ambient Light and Fog.",
             "",
             "> **NOTE:** This plugin is needed by the other `simplethree_*` plugins to work."
         ].join('\n'),
@@ -40,77 +40,60 @@ if (typeof module !== 'undefined') {
 
 // Actions
 
-AddNumberParam("Camera X", "The capmera X in 2D Pixels.", 0);
-AddNumberParam("Camera Y", "The camera Y in 2D Pixels. (Will be translated to camera's Z axis.)", 0);
-AddNumberParam("Camera Elevation", "The camera elevation in 2D Pixels. (Will be translated to camera's Y axis.)", 32);
-AddAction(0, 0, "Set Camera position from 2D coordinates", "Camera", "Camera position to (<b>{0}</b>, <b>{1}</b>) and elevation of <b>{2}</b>", "Set the camera position using 2D coordinates.", "SetCameraPositionFrom2D");
-
-AddNumberParam("Angle", "The camera angle in degrees. (Will be translated to camera's Y axis angle in Radians.)", 0);
-AddAction(1, 0, "Set Camera angle from 2D angle", "Camera", "Camera angle to (<b>{0}</b>) degrees", "Set Camera angle using 2D angle in degrees. This gets translated into the camera's Y angle in radians.", "SetCameraAngleFrom2D");
-
 AddComboParamOption('3D In Front');
 AddComboParamOption('3D Behind');
 AddComboParam('Canvas Order', 'If the 3D canvas will be in front or behind the 2D canvas.', 0);
-AddAction(2, 0, "Set Canvas Order", "Canvas 3D", "The Canvas Order is <b>{0}</b> now", "Put the 3D canvas in front or behind the 2D canvas.", "SetCanvasOrder");
+AddAction(0, 0, "Set Canvas Order", "Canvas 3D", "The Canvas Order is <b>{0}</b> now", "Put the 3D canvas in front or behind the 2D canvas.", "SetCanvasOrder");
 
 AddComboParamOption('In sync with Screen');
 AddComboParamOption('Use Object Size');
 AddComboParam('Canvas Sizing', 'The canvas size behavior.', 0);
-AddAction(3, 0, "Set Canvas Sizing", "Canvas 3D", "The Canvas Sizing is <b>{0}</b> now", "Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout.", "SetCanvasSizing");
+AddAction(1, 0, "Set Canvas Sizing", "Canvas 3D", "The Canvas Sizing is <b>{0}</b> now", "Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout.", "SetCanvasSizing");
 
 AddComboParamOption('Top-Left');
 AddComboParamOption('Use Object Position');
 AddComboParam('Canvas Positioning', 'The canvas position behavior.', 0);
-AddAction(4, 0, "Set Canvas Positioning", "Canvas 3D", "The Canvas Positioning is <b>{0}</b> now", "Keep the 3D canvas at the top-left or use the object's position.", "SetCanvasPositioning");
+AddAction(2, 0, "Set Canvas Positioning", "Canvas 3D", "The Canvas Positioning is <b>{0}</b> now", "Keep the 3D canvas at the top-left or use the object's position.", "SetCanvasPositioning");
 
 AddNumberParam('Pixels Per 3D Unit', 'Number of 2D pixels per 3D unit', 32);
-AddAction(5, 0, "Set Pixels Per 3D Unit", "Canvas 3D", "The Pixels Per 3D Unit are <b>{0}</b> now", "Set the Number of 2D pixels per 3D unit, used for 2D to 3D distances translation.", "SetPixelsPer3DUnit");
+AddAction(3, 0, "Set Pixels Per 3D Unit", "Canvas 3D", "The Pixels Per 3D Unit are <b>{0}</b> now", "Set the Number of 2D pixels per 3D unit, used for 2D to 3D distances translation.", "SetPixelsPer3DUnit");
 
 AddStringParam('Ambient light Color', 'Ambient light color in CSS-style string', '"#ffffff"');
-AddAction(6, 0, "Set The Ambient light Color", "Ambient Light", "The Ambient light Color is <b>{0}</b> now", "Set the Ambient light Color.", "SetAmbientLightColor");
+AddAction(4, 0, "Set The Ambient light Color", "Ambient Light", "The Ambient light Color is <b>{0}</b> now", "Set the Ambient light Color.", "SetAmbientLightColor");
 
 AddNumberParam('Ambient light Intensity', 'How bright is the ambient light', 1.5);
-AddAction(7, 0, "Set The Ambient Light Intensity", "Ambient Light", "Ambient Light Intensity is <b>{0}</b> now", "Set How bright is the ambient light.", "SetAmbientLightIntensity");
-
-AddNumberParam("Field Of View", "The Field Of View (FOV) in degrees. (Will be translated to camera's Y axis angle in Radians.)", 75);
-AddAction(8, 0, "Set Field Of View (FOV)", "Camera", "Camera FOV is (<b>{0}</b>) degrees now", "How wide is the field of view of the camera in degrees.", "SetCameraFOV");
-
-AddNumberParam("Near", "The closest distance an object will be drawn in 2D units.", 3.2);
-AddAction(9, 0, "Set Camera Near Distance", "Camera", "Camera near distance is (<b>{0}</b>) 2D Units now", "Set The closest distance an object will be drawn in 2D units.", "SetCameraNear");
-
-AddNumberParam("Far", "The furthest distance an object will be drawn in 2D units.", 32000);
-AddAction(10, 0, "Set Camera Far Distance", "Camera", "Camera far distance is (<b>{0}</b>) 2D Units now", "Set The furthest distance an object will be drawn in 2D units.", "SetCameraFar");
+AddAction(5, 0, "Set The Ambient Light Intensity", "Ambient Light", "Ambient Light Intensity is <b>{0}</b> now", "Set How bright is the ambient light.", "SetAmbientLightIntensity");
 
 AddComboParamOption('None');
 AddComboParamOption('Linear');
 AddComboParamOption('Exponential Squared');
 AddComboParam('Fog Type', 'The Type of Fog, use None to have no fog at all.', 0);
-AddAction(11, 0, "Set Fog Type", "Fog", "Fog Type is <b>{0}</b> now", "Set The Fog Type.", "SetFogType");
+AddAction(6, 0, "Set Fog Type", "Fog", "Fog Type is <b>{0}</b> now", "Set The Fog Type.", "SetFogType");
 
 AddStringParam('Fog Color', 'Fog color in CSS-style string', '"#ffffff"');
-AddAction(12, 0, "Set Fog Color", "Fog", "Fog Color is <b>{0}</b> now", "Set The Fog Color.", "SetFogColor");
+AddAction(7, 0, "Set Fog Color", "Fog", "Fog Color is <b>{0}</b> now", "Set The Fog Color.", "SetFogColor");
 
 AddNumberParam("Fog Density", "How fast the fog will grow dense.", 0.06);
-AddAction(13, 0, "Set Density ", "Fog", "Fog Density is <b>{0}</b> now", "Defines how fast the fog will grow dense. Only applies on Exponential Squared Fog", "SetFogDensity");
+AddAction(8, 0, "Set Density ", "Fog", "Fog Density is <b>{0}</b> now", "Defines how fast the fog will grow dense. Only applies on Exponential Squared Fog", "SetFogDensity");
 
 AddNumberParam("Fog Near Distance", "Distance in 2D units.", 3.2);
-AddAction(14, 0, "Set Fog Near", "Fog", "Fog Near is <b>{0}</b> now", "Set The Fog Near Distance. Only applies for Linear Fog.", "SetFogNear");
+AddAction(9, 0, "Set Fog Near", "Fog", "Fog Near is <b>{0}</b> now", "Set The Fog Near Distance. Only applies for Linear Fog.", "SetFogNear");
 
 AddNumberParam("Fog Far Distance", "Distance in 2D units.", 300);
-AddAction(15, 0, "Set Fog Far", "Fog", "Fog Near is <b>{0}</b> now", "Set The Fog Far Distance. Only applies for Linear Fog.", "SetFogFar");
+AddAction(10, 0, "Set Fog Far", "Fog", "Fog Near is <b>{0}</b> now", "Set The Fog Far Distance. Only applies for Linear Fog.", "SetFogFar");
 
 AddStringParam('Scene Background Color', 'Color in CSS-style string', '"#ffffff"');
-AddAction(16, 0, "Set Scene Background Color", "Scene", "Scene Background Color is <b>{0}</b> now", "Set The Scene Background Color.", "SetSceneBackgroundColor");
+AddAction(11, 0, "Set Scene Background Color", "Scene", "Scene Background Color is <b>{0}</b> now", "Set The Scene Background Color.", "SetSceneBackgroundColor");
 
 // Colors through numbers
 AddStringParam('Ambient light Color', 'Ambient light color From Number', "rgb(255, 255, 255)");
-AddAction(17, 0, "Set The Ambient light Color From Number", "Ambient Light", "The Ambient light Color is <b>{0}</b> now", "Set the Ambient light Color.", "SetAmbientLightColor");
+AddAction(12, 0, "Set The Ambient light Color From Number", "Ambient Light", "The Ambient light Color is <b>{0}</b> now", "Set the Ambient light Color.", "SetAmbientLightColor");
 
 AddNumberParam('Fog Color', 'Fog color From Number', "rgb(255, 255, 255)");
-AddAction(18, 0, "Set Fog Color From Number", "Fog", "Fog Color is <b>{0}</b> now", "Set The Fog Color.", "SetFogColor");
+AddAction(13, 0, "Set Fog Color From Number", "Fog", "Fog Color is <b>{0}</b> now", "Set The Fog Color.", "SetFogColor");
 
 AddNumberParam('Scene Background Color', 'Color using a number', 0xFFFFFF);
-AddAction(19, 0, "Set Scene Background Color From Number", "Scene", "Scene Background Color is <b>{0}</b> now", "Set The Scene Background Color.", "SetSceneBackgroundColor");
+AddAction(14, 0, "Set Scene Background Color From Number", "Scene", "Scene Background Color is <b>{0}</b> now", "Set The Scene Background Color.", "SetSceneBackgroundColor");
 
 // Expressions
 AddExpression(0, ef_return_number, "Canvas Order", "Canvas 3D", "CanvasOrder", "The 3D canvas in front or behind the 2D canvas. 0=3D In Front, 1=3D Behind");
@@ -121,15 +104,12 @@ AddExpression(4, ef_return_number, "Hotspot Y", "Canvas 3D", "HotspotY", "The lo
 AddExpression(5, ef_return_number, "Pixels Per 3D Unit", "Canvas 3D", "PixelsPer3DUnit", "Number of 2D pixels per 3D unit, used for 2D to 3D distances translation");
 AddExpression(6, ef_return_number, "Ambient light Color", "Ambient Light", "AmbientLightColor", "Ambient light color in RGB format");
 AddExpression(7, ef_return_number, "Ambient light Intensity", "Ambient Light", "AmbientLightIntensity", "How bright is the light");
-AddExpression(8, ef_return_number, "Field Of View (FOV)", "Camera", "Fov", "How wide is the field of view of the camera in degrees.");
-AddExpression(9, ef_return_number, "Near", "Camera", "Near", "The closest distance an object will be drawn in 2D units.");
-AddExpression(10, ef_return_number, "Far", "Camera", "Far", "The furthest distance an object will be drawn in 2D units.");
-AddExpression(11, ef_return_number, "Fog Type", "Fog", "FogType", "The Fog Type.");
-AddExpression(12, ef_return_number, "Fog Color", "Fog", "FogColor", "The Fog Color.");
-AddExpression(13, ef_return_number, "Density ", "Fog", "FogDensity", "How fast the fog will grow dense. Only applies on Exponential Squared Fog");
-AddExpression(14, ef_return_number, "Fog Near", "Fog", "FogNear", "The Fog Near Distance. Only applies for Linear Fog.");
-AddExpression(15, ef_return_number, "Fog Far", "Fog", "FogFar", "The Fog Far Distance. Only applies for Linear Fog.");
-AddExpression(16, ef_return_number, "Scene Background Color", "Scene", "SceneBackgroundColor", "The Scene Background Color.");
+AddExpression(8, ef_return_number, "Fog Type", "Fog", "FogType", "The Fog Type.");
+AddExpression(9, ef_return_number, "Fog Color", "Fog", "FogColor", "The Fog Color.");
+AddExpression(10, ef_return_number, "Density ", "Fog", "FogDensity", "How fast the fog will grow dense. Only applies on Exponential Squared Fog");
+AddExpression(11, ef_return_number, "Fog Near", "Fog", "FogNear", "The Fog Near Distance. Only applies for Linear Fog.");
+AddExpression(12, ef_return_number, "Fog Far", "Fog", "FogFar", "The Fog Far Distance. Only applies for Linear Fog.");
+AddExpression(13, ef_return_number, "Scene Background Color", "Scene", "SceneBackgroundColor", "The Scene Background Color.");
 
 ////////////////////////////////////////
 ACESDone();
@@ -142,27 +122,26 @@ ACESDone();
 // new cr.Property(ept_combo,		name,	"Item 1",		description, "Item 1|Item 2|Item 3")	// a dropdown list (initial_value is string of initially selected item)
 
 var property_list = [
-    new cr.Property(ept_section, "Three-dimensional Canvas Options"),
-    new cr.Property(ept_combo, "Canvas Order", "3D In Front", "Put the 3D canvas in front or behind the 2D canvas.", "3D In Front|3D Behind"),
-    new cr.Property(ept_combo, "Canvas Sizing", "In sync with Screen", "Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout.", "In sync with Screen|Use Object Size"),
-    new cr.Property(ept_combo, "Canvas Positioning", "Top-Left", "Keep the 3D canvas at the top-left or use the object's position.", "Top-Left|Use Object Position"),
-    new cr.Property(ept_combo, "Hotspot", "Top-left", "Choose the location of the hot spot in the object.", "Top-left|Top|Top-right|Left|Center|Right|Bottom-left|Bottom|Bottom-right"),
-    new cr.Property(ept_integer, "Pixels Per 3D Unit", 32, "Number of 2D pixels per 3D unit, used for 2D to 3D distances translation"),
-    new cr.Property(ept_section, "Ambient Light Options"),
-    new cr.Property(ept_color, "Ambient light Color", cr.RGB(255, 255, 255), "Ambient light color in RGB format"),
-    new cr.Property(ept_float, "Ambient light Intensity", 1.5, "How bright is the light"),
-    new cr.Property(ept_section, "Camera Options"),
-    new cr.Property(ept_float, "Field Of View (FOV)", 75, "How wide is the field of view of the camera in degrees."),
-    new cr.Property(ept_float, "Near", 3.2, "The closest distance an object will be drawn in 2D units."),
-    new cr.Property(ept_float, "Far", 32000, "The furthest distance an object will be drawn in 2D units."),
-    new cr.Property(ept_section, "Fog"),
-    new cr.Property(ept_combo, "Fog Type", "None", "Type of the scene Fog.", "None|Linear|Exponential Squared"),
-    new cr.Property(ept_color, "Fog Color", cr.RGB(255, 255, 255), "Color of the Fog."),
-    new cr.Property(ept_float, "Fog Density (Exponential Squared Fog Only)", 0.06, "Defines how fast the fog will grow dense."),
-    new cr.Property(ept_float, "Fog Near (Linear Fog Only)", 3.2, "The minimum distance to start applying fog. Objects that are less than 'near' units from the active camera won't be affected by fog."),
-    new cr.Property(ept_float, "Fog Far (Linear Fog Only)", 300, "The maximum distance at which fog stops being calculated and applied. Objects that are more than 'far' units away from the active camera won't be affected by fog."),
-    new cr.Property(ept_section, "Scene"),
-    new cr.Property(ept_color, "Scene Background Color", cr.RGB(0, 0, 0), "Color of the Scene's background."),
+    /*--*/new cr.Property(ept_section, "Three-dimensional Canvas Options"),
+    /* 0*/new cr.Property(ept_combo, "Canvas Order", "3D In Front", "Put the 3D canvas in front or behind the 2D canvas.", "3D In Front|3D Behind"),
+    /* 1*/new cr.Property(ept_combo, "Canvas Sizing", "In sync with Screen", "Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout.", "In sync with Screen|Use Object Size"),
+    /* 2*/new cr.Property(ept_combo, "Canvas Positioning", "Top-Left", "Keep the 3D canvas at the top-left or use the object's position.", "Top-Left|Use Object Position"),
+    /* 3*/new cr.Property(ept_combo, "Hotspot", "Top-left", "Choose the location of the hot spot in the object.", "Top-left|Top|Top-right|Left|Center|Right|Bottom-left|Bottom|Bottom-right"),
+    /* 4*/new cr.Property(ept_integer, "Pixels Per 3D Unit", 32, "Number of 2D pixels per 3D unit, used for 2D to 3D distances translation"),
+
+    /*--*/new cr.Property(ept_section, "Ambient Light Options"),
+    /* 5*/new cr.Property(ept_color, "Ambient light Color", cr.RGB(255, 255, 255), "Ambient light color in RGB format"),
+    /* 6*/new cr.Property(ept_float, "Ambient light Intensity", 1.5, "How bright is the light"),
+
+    /*--*/new cr.Property(ept_section, "Fog"),
+    /* 7*/new cr.Property(ept_combo, "Fog Type", "None", "Type of the scene Fog.", "None|Linear|Exponential Squared"),
+    /* 8*/new cr.Property(ept_color, "Fog Color", cr.RGB(255, 255, 255), "Color of the Fog."),
+    /* 9*/new cr.Property(ept_float, "Fog Density (Exponential Squared Fog Only)", 0.06, "Defines how fast the fog will grow dense."),
+    /*10*/new cr.Property(ept_float, "Fog Near (Linear Fog Only)", 3.2, "The minimum distance to start applying fog. Objects that are less than 'near' units from the active camera won't be affected by fog."),
+    /*11*/new cr.Property(ept_float, "Fog Far (Linear Fog Only)", 300, "The maximum distance at which fog stops being calculated and applied. Objects that are more than 'far' units away from the active camera won't be affected by fog."),
+
+    /*--*/new cr.Property(ept_section, "Scene"),
+    /*12*/new cr.Property(ept_color, "Scene Background Color", cr.RGB(0, 0, 0), "Color of the Scene's background."),
 ];
 
 // Called by IDE when a new behavior type is to be created

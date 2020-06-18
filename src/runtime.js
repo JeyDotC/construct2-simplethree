@@ -126,24 +126,20 @@ cr.plugins_.SimpleThree = function (runtime) {
     };
 
     instanceProto.onCreate = function () {
-        console.log('On Create');
         this.canvasOrder = this.properties[0];
         this.canvasSizing = this.properties[1];
         this.canvasPositioning = this.properties[2];
         this.pixelsPer3DUnit = this.properties[4];
         this.ambientLightColor = new THREE.Color(this.properties[5]);
         this.ambientLightIntensity = this.properties[6];
-        this.fov = this.properties[7];
-        this.near = this.pixelsTo3DUnits(this.properties[8]);
-        this.far = this.pixelsTo3DUnits(this.properties[9]);
         // Fog
-        this.fogType = this.properties[10];
-        this.fogColor = new THREE.Color(this.properties[11]);
-        this.fogDensity = this.properties[12];
-        this.fogNear = this.pixelsTo3DUnits(this.properties[13]);
-        this.fogFar = this.pixelsTo3DUnits(this.properties[14]);
+        this.fogType = this.properties[7];
+        this.fogColor = new THREE.Color(this.properties[8]);
+        this.fogDensity = this.properties[9];
+        this.fogNear = this.pixelsTo3DUnits(this.properties[10]);
+        this.fogFar = this.pixelsTo3DUnits(this.properties[11]);
         // Scene
-        this.sceneBackgroundColor = new THREE.Color(this.properties[15]);
+        this.sceneBackgroundColor = new THREE.Color(this.properties[12]);
 
         this.canvas3d = createCanvas();
 
@@ -160,9 +156,6 @@ cr.plugins_.SimpleThree = function (runtime) {
         this.scene.background = this.sceneBackgroundColor;
 
         this.configureFog();
-
-        this.camera = new THREE.PerspectiveCamera(this.fov, this.width / this.height, this.near, this.far);
-        this.camera.position.z = 5;
 
         this.ambientLight = new THREE.AmbientLight(this.ambientLightColor, this.ambientLightIntensity);
 
@@ -207,7 +200,6 @@ cr.plugins_.SimpleThree = function (runtime) {
             {width: this.runtime.canvas.width, height: this.runtime.canvas.height};
 
         this.renderer.setSize(newSize.width, newSize.height);
-        this.camera.aspect = newSize.width / newSize.height;
 
         this.runtime.redraw = true;
     };
@@ -227,7 +219,9 @@ cr.plugins_.SimpleThree = function (runtime) {
     };
 
     instanceProto.drawGL = function (glw) {
-        this.renderer.render(this.scene, this.camera);
+        if(this.camera) {
+            this.renderer.render(this.scene, this.camera);
+        }
     };
 
     // called when saving the full state of the game
@@ -242,10 +236,6 @@ cr.plugins_.SimpleThree = function (runtime) {
             "p3": this.pixelsPer3DUnit,
             "lc": this.ambientLightColor.getHex(),
             "li": this.ambientLightIntensity,
-            "x": this.threeDimentionalUnitsToPixels(this.camera.position.x),
-            "y": this.threeDimentionalUnitsToPixels(this.camera.position.z),
-            "z": this.threeDimentionalUnitsToPixels(this.camera.position.y),
-            "a": cr.to_degrees(-this.camera.rotation.y),
             "fv": this.fov,
             "n": this.threeDimentionalUnitsToPixels(this.near),
             "f": this.threeDimentionalUnitsToPixels(this.far),
@@ -273,13 +263,6 @@ cr.plugins_.SimpleThree = function (runtime) {
         acts.SetPixelsPer3DUnit.bind(this)(o["p3"]);
         acts.SetAmbientLightColor.bind(this)(o["lc"]);
         acts.SetAmbientLightIntensity.bind(this)(o["li"]);
-        this.camera.position.x = this.pixelsTo3DUnits(o["x"]);
-        this.camera.position.z = this.pixelsTo3DUnits(o["y"]);
-        this.camera.position.y = this.pixelsTo3DUnits(o["z"]);
-        acts.SetCameraAngleFrom2D.bind(this)(o["a"]);
-        acts.SetCameraFOV.bind(this)(o["fv"]);
-        acts.SetCameraNear.bind(this)(o["n"]);
-        acts.SetCameraFar.bind(this)(o["f"]);
         acts.SetFogType.bind(this)(o["ft"]);
         acts.SetFogColor.bind(this)(o["fc"]);
         acts.SetFogDensity.bind(this)(o["fd"]);
@@ -323,18 +306,6 @@ cr.plugins_.SimpleThree = function (runtime) {
             ]
         });
         propsections.push({
-            "title": `${this.type.name}: Camera`,
-            "properties": [
-                {"name": "X", "value": this.threeDimentionalUnitsToPixels(this.camera.position.x)},
-                {"name": "Y", "value": this.threeDimentionalUnitsToPixels(this.camera.position.z)},
-                {"name": "Elevation", "value": this.threeDimentionalUnitsToPixels(this.camera.position.y)},
-                {"name": "Angle", "value": cr.to_degrees(-this.camera.rotation.y)},
-                {"name": "fov", "value": this.fov},
-                {"name": "near", "value": this.threeDimentionalUnitsToPixels(this.near)},
-                {"name": "far", "value": this.threeDimentionalUnitsToPixels(this.far)},
-            ]
-        });
-        propsections.push({
             "title": `${this.type.name}: Fog`,
             "properties": [
                 {"name": "fogType", "value": this.fogType},
@@ -373,27 +344,6 @@ cr.plugins_.SimpleThree = function (runtime) {
             case "ambientLightIntensity":
                 acts.SetAmbientLightIntensity.bind(this)(value);
                 break;
-            case "X"         :
-                this.camera.position.x = this.pixelsTo3DUnits(value);
-                break;
-            case "Y"         :
-                this.camera.position.z = this.pixelsTo3DUnits(value);
-                break;
-            case "Elevation" :
-                this.camera.position.y = this.pixelsTo3DUnits(value);
-                break;
-            case "Angle"     :
-                acts.SetCameraAngleFrom2D.bind(this)(value);
-                break;
-            case "fov"                  :
-                acts.SetCameraFOV.bind(this)(value);
-                break;
-            case "near"                 :
-                acts.SetCameraNear.bind(this)(value);
-                break;
-            case "far"                  :
-                acts.SetCameraFar.bind(this)(value);
-                break;
             case "fogType"              :
                 acts.SetFogType.bind(this)(value);
                 break;
@@ -430,20 +380,6 @@ cr.plugins_.SimpleThree = function (runtime) {
     // Actions
     function Acts() {
     }
-
-    Acts.prototype.SetCameraPositionFrom2D = function (x, y, elevation) {
-        const x3D = this.pixelsTo3DUnits(x);
-        const y3D = this.pixelsTo3DUnits(y);
-        const elevation3D = this.pixelsTo3DUnits(elevation);
-
-        this.camera.position.x = x3D;
-        this.camera.position.z = y3D;
-        this.camera.position.y = elevation3D;
-    };
-
-    Acts.prototype.SetCameraAngleFrom2D = function (angle) {
-        this.camera.rotation.y = this.angleTo3D(angle);
-    };
 
     Acts.prototype.SetCanvasOrder = function (newCanvasOrder) {
         if (newCanvasOrder !== this.canvasOrder) {
@@ -484,35 +420,6 @@ cr.plugins_.SimpleThree = function (runtime) {
 
     Acts.prototype.SetAmbientLightIntensity = function (newAmbientLightIntensity) {
         this.ambientLightIntensity = this.ambientLight.intensity = newAmbientLightIntensity;
-        this.runtime.redraw = true;
-    };
-
-    Acts.prototype.SetCameraFOV = function (cameraFov) {
-        if (cameraFov == this.fov) {
-            return;
-        }
-        this.fov = this.camera.fov = cameraFov;
-        this.camera.updateProjectionMatrix();
-        this.runtime.redraw = true;
-    };
-
-    Acts.prototype.SetCameraNear = function (cameraNear) {
-        const newCameraNear = this.pixelsTo3DUnits(cameraNear);
-        if (newCameraNear == this.near) {
-            return;
-        }
-        this.near = this.camera.near = newCameraNear;
-        this.camera.updateProjectionMatrix();
-        this.runtime.redraw = true;
-    };
-
-    Acts.prototype.SetCameraFar = function (cameraFar) {
-        const newCameraFar = this.pixelsTo3DUnits(cameraFar);
-        if (newCameraFar == this.far) {
-            return;
-        }
-        this.far = this.camera.far = newCameraFar;
-        this.camera.updateProjectionMatrix();
         this.runtime.redraw = true;
     };
 
