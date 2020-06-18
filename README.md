@@ -1,7 +1,7 @@
 # SimpleThree
 **Type:** Plugin
 
-Creates a secondary canvas to render Three JS objects. It provides basic settings for Camera and Ambient Light.
+Creates a secondary canvas to render Three JS objects. It provides basic settings for Ambient Light and Fog.
 
 > **NOTE:** This plugin is needed by the other `simplethree_*` plugins to work.
 
@@ -18,10 +18,6 @@ Creates a secondary canvas to render Three JS objects. It provides basic setting
 | | | **Ambient Light Options**| |
 |**Ambient light Color**| _color_ | Ambient light color in RGB format Default value: `ffffff` |  |
 |**Ambient light Intensity**| _float_ | How bright is the light Default value: `1.5` |  |
-| | | **Camera Options**| |
-|**Field Of View (FOV)**| _float_ | How wide is the field of view of the camera in degrees. Default value: `75` |  |
-|**Near**| _float_ | The closest distance an object will be drawn in 2D units. Default value: `3.2` |  |
-|**Far**| _float_ | The furthest distance an object will be drawn in 2D units. Default value: `32000` |  |
 | | | **Fog**| |
 |**Fog Type**| _combo_ | Type of the scene Fog. Default value: `None` | - None<br/>- Linear<br/>- Exponential Squared |
 |**Fog Color**| _color_ | Color of the Fog. Default value: `ffffff` |  |
@@ -37,12 +33,6 @@ Creates a secondary canvas to render Three JS objects. It provides basic setting
 
 | Name | Description | Parameters |
 |------|-------------|------------|
-| |**Camera**| |
-|**Set Camera position from 2D coordinates**| Set the camera position using 2D coordinates. | - **Camera X** _number_: The capmera X in 2D Pixels. <br />- **Camera Y** _number_: The camera Y in 2D Pixels. (Will be translated to camera's Z axis.) <br />- **Camera Elevation** _number_ = `32`: The camera elevation in 2D Pixels. (Will be translated to camera's Y axis.)  |
-|**Set Camera angle from 2D angle**| Set Camera angle using 2D angle in degrees. This gets translated into the camera's Y angle in radians. | - **Angle** _number_: The camera angle in degrees. (Will be translated to camera's Y axis angle in Radians.)  |
-|**Set Field Of View (FOV)**| How wide is the field of view of the camera in degrees. | - **Field Of View** _number_ = `75`: The Field Of View (FOV) in degrees. (Will be translated to camera's Y axis angle in Radians.)  |
-|**Set Camera Near Distance**| Set The closest distance an object will be drawn in 2D units. | - **Near** _number_ = `3.2`: The closest distance an object will be drawn in 2D units.  |
-|**Set Camera Far Distance**| Set The furthest distance an object will be drawn in 2D units. | - **Far** _number_ = `32000`: The furthest distance an object will be drawn in 2D units.  |
 | |**Canvas 3D**| |
 |**Set Canvas Order**| Put the 3D canvas in front or behind the 2D canvas. | - **Canvas Order** _combo_: If the 3D canvas will be in front or behind the 2D canvas.  **Options**: (`3D In Front`, `3D Behind`) |
 |**Set Canvas Sizing**| Automatically keep the 3D canvas size to be the same as the 2D canvas or use the object's size as set in the layout. | - **Canvas Sizing** _combo_: The canvas size behavior.  **Options**: (`In sync with Screen`, `Use Object Size`) |
@@ -77,10 +67,6 @@ Creates a secondary canvas to render Three JS objects. It provides basic setting
 | | |**Ambient Light**| |
 |**Ambient light Color**<br/><small>**Usage:** `SimpleThree.AmbientLightColor`</small>|`number`| Ambient light color in RGB format |  |
 |**Ambient light Intensity**<br/><small>**Usage:** `SimpleThree.AmbientLightIntensity`</small>|`number`| How bright is the light |  |
-| | |**Camera**| |
-|**Field Of View (FOV)**<br/><small>**Usage:** `SimpleThree.Fov`</small>|`number`| How wide is the field of view of the camera in degrees. |  |
-|**Near**<br/><small>**Usage:** `SimpleThree.Near`</small>|`number`| The closest distance an object will be drawn in 2D units. |  |
-|**Far**<br/><small>**Usage:** `SimpleThree.Far`</small>|`number`| The furthest distance an object will be drawn in 2D units. |  |
 | | |**Fog**| |
 |**Fog Type**<br/><small>**Usage:** `SimpleThree.FogType`</small>|`number`| The Fog Type. |  |
 |**Fog Color**<br/><small>**Usage:** `SimpleThree.FogColor`</small>|`number`| The Fog Color. |  |
