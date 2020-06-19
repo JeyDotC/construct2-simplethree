@@ -24,7 +24,7 @@ function GetPluginSettings() {
             "> **NOTE:** This plugin is needed by the other `simplethree_*` plugins to work."
         ].join('\n'),
         "author": "JeyDotC",
-        "help url": "<your website or a manual entry on Scirra.com>",
+        "help url": "https://github.com/JeyDotC/construct2-simplethree",
         "category": "Three Js",				// Prefer to re-use existing categories, but you can set anything here
         "type": "world",			// appears in layout
         "rotatable": false,
