@@ -1,7 +1,7 @@
 theme: jekyll-theme-cayman
 
 # Theme setup
-title:        Simple Three
-tagline:      A 2D developer friendly collection of addons for Construct 2
-paginate:     1
-locale:       "en"
+title: SimpleThree
+tagline: A 2D developer friendly collection of addons for Construct 2
+paginate: 1
+locale: "en"
