@@ -39,7 +39,7 @@ Create a new **Sprite** that will be your camera, and add the **SimpleThree_Came
 
 By this point you should be able to see the background color, which is black by default. You can try setting any other color at the _Scene Background Color_ property of the **SimpleThree** object.
 
-Now, let's add a 
+Now, let's create a new **Tiled Background** object type and add the  
 
 
 

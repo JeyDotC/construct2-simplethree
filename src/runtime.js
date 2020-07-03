@@ -201,7 +201,28 @@ cr.plugins_.SimpleThree = function (runtime) {
 
         this.renderer.setSize(newSize.width, newSize.height);
 
+        if (this.camera) {
+            this.updateCameraAspect();
+        }
+
         this.runtime.redraw = true;
+    };
+
+    instanceProto.setCamera = function (newCamera) {
+        this.camera = newCamera;
+        this.updateCameraAspect();
+    };
+
+    instanceProto.updateCameraAspect = function () {
+        if(!this.camera){
+            return;
+        }
+        const {width, height} = this.renderer.getSize();
+        const newAspect = width / height;
+        if(newAspect !== this.camera.aspect) {
+            this.camera.aspect = newAspect;
+            this.camera.updateProjectionMatrix();
+        }
     };
 
     instanceProto.onDestroy = function () {
@@ -219,7 +240,7 @@ cr.plugins_.SimpleThree = function (runtime) {
     };
 
     instanceProto.drawGL = function (glw) {
-        if(this.camera) {
+        if (this.camera) {
             this.renderer.render(this.scene, this.camera);
         }
     };
